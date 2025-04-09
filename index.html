@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>講義資料</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="wrapper">
+        <!-- サイドバー -->
+        <aside class="sidebar" id="sidebar">
+            <!-- サイドバーの内容はJavaScriptで読み込む -->
+        </aside>
+
+        <!-- メインコンテンツ -->
+        <main class="content" id="content">
+            <button class="toggle-sidebar" onclick="toggleSidebar()">Toggle primary sidebar</button>
+            <h1>講義資料のページ</h1>
+            <p>本コンテンツは「統計論」の講義に関連する資料をアップロードする場所です。</p>
+            <h2>資料の使い方</h2>
+            <p>各回の内容に関連した資料をアップロードします。</p>
+        </main>
+    </div>
+
+    <!-- サイドバーを読み込むスクリプト -->
+    <script>
+        // サイドバーの内容を読み込む
+        fetch('sidebar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('sidebar').innerHTML = data;
+            });
+
+        // サイドバーのトグル機能
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const content = document.getElementById('content');
+            const isHidden = sidebar.style.display === 'none';
+
+            if (isHidden) {
+                sidebar.style.display = 'block';
+                content.style.marginLeft = '250px';
+                localStorage.setItem('sidebarVisible', 'true');
+            } else {
+                sidebar.style.display = 'none';
+                content.style.marginLeft = '0';
+                localStorage.setItem('sidebarVisible', 'false');
+            }
+        }
+
+        // ページ読み込み時にサイドバーの状態を復元
+        window.onload = function() {
+            const sidebar = document.getElementById('sidebar');
+            const content = document.getElementById('content');
+            const sidebarVisible = localStorage.getItem('sidebarVisible');
+
+            if (sidebarVisible === 'false') {
+                sidebar.style.display = 'none';
+                content.style.marginLeft = '0';
+            } else {
+                sidebar.style.display = 'block';
+                content.style.marginLeft = '250px';
+            }
+        };
+    </script>
+</body>
+</html>

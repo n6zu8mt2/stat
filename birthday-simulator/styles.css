@@ -1,0 +1,19 @@
+.birthdays {
+    margin-top: 2rem;
+}
+
+.settings {
+    text-align: center;
+}
+
+/* 同じ誕生日の組ごとに異なる色を割り当て */
+.color-0 { background-color: #ffcccc; }
+.color-1 { background-color: #ccffcc; }
+.color-2 { background-color: #ccccff; }
+.color-3 { background-color: #ffcc99; }
+.color-4 { background-color: #99ccff; }
+.color-5 { background-color: #cc99cc; }
+.color-6 { background-color: #ff99cc; }
+.color-7 { background-color: #99ffcc; }
+.color-8 { background-color: #ccff99; }
+.color-9 { background-color: #ffccff; }

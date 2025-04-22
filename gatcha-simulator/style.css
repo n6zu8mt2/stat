@@ -1,0 +1,29 @@
+/* ガチャシミュレーター固有のスタイル */
+.birthdays {
+    margin-top: 2rem;
+}
+
+.settings, .additional-draws {
+    text-align: center;
+}
+
+/* 景品ごとの色（セレクタの優先度を高める） */
+td.color-0 { background-color: #ffcccc; }
+td.color-1 { background-color: #ccffcc; }
+td.color-2 { background-color: #ccccff; }
+td.color-3 { background-color: #ffcc99; }
+td.color-4 { background-color: #99ccff; }
+td.color-5 { background-color: #cc99cc; }
+td.color-6 { background-color: #ff99cc; }
+td.color-7 { background-color: #99ffcc; }
+td.color-8 { background-color: #ccff99; }
+td.color-9 { background-color: #ffccff; }
+
+/* リセットボタンのスタイル */
+.reset-btn {
+    background-color: #e74c3c;
+}
+
+.reset-btn:hover:not(:disabled) {
+    background-color: #c0392b;
+}

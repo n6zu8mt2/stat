@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>誕生日シミュレーター</title>
+    <title>コイントスシミュレーター</title>
     <link rel="stylesheet" href="../common.css">
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -25,18 +25,17 @@
         <!-- メインコンテンツ -->
         <div class="main-content">
             <div class="header">
-                <h1>誕生日シミュレーター</h1>
+                <h1>コイントスシミュレーター</h1>
             </div>
             <div class="container">
                 <!-- 説明文 -->
                 <div class="description">
-                    <h2>🎂 シミュレーションの説明</h2>
-                    <p>このシミュレーターでは、指定した人数（n人）の誕生日をランダムに生成し、同じ誕生日を持つ人がいるかを調べます。結果を表形式で表示し、誕生日が一致する組を強調します。以下の手順でシミュレーションを行います：</p>
+                    <h2>📘 シミュレーションの説明</h2>
+                    <p>このシミュレーターでは、コインを2枚同時に投げて表が出た回数をカウントします。その操作を指定した回数（n回）繰り返し、結果を表形式で集計します。以下の手順でシミュレーションを行います：</p>
                     <ul>
-                        <li>人数（n）を指定（デフォルト: 30人）。</li>
-                        <li>各人の誕生日を1月1日から12月31日までの間でランダムに生成（うるう年は考慮しない）。</li>
-                        <li>誕生日を表形式で表示（同じ誕生日の人は色付きで強調）。</li>
-                        <li>同じ誕生日を持つ組の詳細と、誕生日が一致する確率（理論値）を表示。</li>
+                        <li>コインを2枚投げ、表が出た枚数を記録（0枚、1枚、2枚のいずれか）。</li>
+                        <li>上記をn回繰り返す（デフォルト: 100回）。</li>
+                        <li>表が0枚、1枚、2枚のときの回数と割合を表で表示。</li>
                     </ul>
                 </div>
 
@@ -44,23 +43,25 @@
                 <div class="settings">
                     <h2>シミュレーション設定</h2>
                     <div class="input-group">
-                        <label for="num-people">クラス内の人数（1以上）:</label>
-                        <input type="number" id="num-people" min="1" value="30">
+                        <label for="num-trials">試行回数 n（1以上）:</label>
+                        <input type="number" id="num-trials" min="1" value="100">
                     </div>
                     <button onclick="runSimulation()">シミュレーション実行</button>
                 </div>
 
-                <!-- 誕生日一覧表 -->
-                <div class="birthdays">
-                    <h2>誕生日一覧</h2>
-                    <table id="birthday-table"></table>
-                </div>
-
-                <!-- 結果表示 -->
-                <div class="result">
+                <!-- 結果表 -->
+                <div class="results">
                     <h2>結果</h2>
-                    <p id="result-text"></p>
-                    <p id="probability-text"></p>
+                    <table id="result-table">
+                        <thead>
+                            <tr>
+                                <th>表の枚数</th>
+                                <th>回数</th>
+                                <th>割合</th>
+                            </tr>
+                        </thead>
+                        <tbody id="result-body"></tbody>
+                    </table>
                 </div>
             </div>
         </div>

@@ -1,23 +1,22 @@
-/* 誕生日シミュレーター固有のスタイル */
-.birthdays {
-    margin-top: 2rem;
-}
-
+/* 席替えシミュレーター固有のスタイル */
 .settings {
     text-align: center;
 }
 
-/* 誕生日ごとの色 */
-.color-0 { background-color: #ffcccc; }
-.color-1 { background-color: #ccffcc; }
-.color-2 { background-color: #ccccff; }
-.color-3 { background-color: #ffcc99; }
-.color-4 { background-color: #99ccff; }
-.color-5 { background-color: #cc99cc; }
-.color-6 { background-color: #ff99cc; }
-.color-7 { background-color: #99ffcc; }
-.color-8 { background-color: #ccff99; }
-.color-9 { background-color: #ffccff; }
+.results, .swap-results {
+    margin-top: 2rem;
+}
+
+th, td {
+    padding: 0.5rem;
+    border: 1px solid #bdc3c7;
+    text-align: center;
+}
+
+/* 同じ席になる項目の色 */
+td.same-seat {
+    background-color: #ffcccc; /* 薄い赤 */
+}
 
 /* 説明文のスタイル */
 .description {
@@ -61,7 +60,7 @@
 
 .example-table table {
     width: 100%;
-    max-width: 700px;
+    max-width: 500px;
     margin: 0 auto;
     border-collapse: collapse;
 }
@@ -81,9 +80,9 @@
     font-size: 0.9rem;
 }
 
-.example-summary {
-    text-align: center;
-    color: #34495e;
-    margin-top: 0.5rem;
-    font-size: 0.95rem;
+/* 席替え結果表のスタイル */
+.swap-results table {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
 }

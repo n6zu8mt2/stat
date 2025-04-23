@@ -1,23 +1,22 @@
-/* 誕生日シミュレーター固有のスタイル */
-.birthdays {
-    margin-top: 2rem;
-}
-
+/* コイントスシミュレーター固有のスタイル */
 .settings {
     text-align: center;
 }
 
-/* 誕生日ごとの色 */
-.color-0 { background-color: #ffcccc; }
-.color-1 { background-color: #ccffcc; }
-.color-2 { background-color: #ccccff; }
-.color-3 { background-color: #ffcc99; }
-.color-4 { background-color: #99ccff; }
-.color-5 { background-color: #cc99cc; }
-.color-6 { background-color: #ff99cc; }
-.color-7 { background-color: #99ffcc; }
-.color-8 { background-color: #ccff99; }
-.color-9 { background-color: #ffccff; }
+.results {
+    margin-top: 2rem;
+}
+
+th, td {
+    padding: 0.5rem;
+    border: 1px solid #bdc3c7;
+    text-align: center;
+}
+
+/* 表の枚数ごとの色（パステルトーン） */
+td.heads-0 { background-color: #ffcccc; } /* 表0枚: 薄い赤 */
+td.heads-1 { background-color: #ccffcc; } /* 表1枚: 薄い緑 */
+td.heads-2 { background-color: #ccccff; } /* 表2枚: 薄い青 */
 
 /* 説明文のスタイル */
 .description {
@@ -61,16 +60,8 @@
 
 .example-table table {
     width: 100%;
-    max-width: 700px;
+    max-width: 500px;
     margin: 0 auto;
-    border-collapse: collapse;
-}
-
-.example-table td {
-    padding: 0.5rem;
-    border: 1px solid #bdc3c7;
-    text-align: center;
-    font-size: 0.9rem;
 }
 
 .example-table .caption {
@@ -79,11 +70,4 @@
     font-style: italic;
     margin-top: 0.5rem;
     font-size: 0.9rem;
-}
-
-.example-summary {
-    text-align: center;
-    color: #34495e;
-    margin-top: 0.5rem;
-    font-size: 0.95rem;
 }

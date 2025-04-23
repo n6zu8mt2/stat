@@ -1,14 +1,101 @@
-.rules {
-    text-align: left;
-    border-left: 4px solid #3498db;
-    padding-left: 1rem;
-}
-
+/* ロト6シミュレーター固有のスタイル */
 .settings {
     text-align: center;
 }
 
-.result span {
-    font-weight: bold;
+.draw-results, .results, .summary {
+    margin-top: 2rem;
+}
+
+th, td {
+    padding: 0.5rem;
+    border: 1px solid #bdc3c7;
+    text-align: center;
+}
+
+/* 当選等ごとの色 */
+td.rank-1 { background-color: #ffcccc; } /* 1等: 薄い赤 */
+td.rank-2 { background-color: #ffcc99; } /* 2等: 薄いオレンジ */
+td.rank-3 { background-color: #ccffcc; } /* 3等: 薄い緑 */
+td.rank-4 { background-color: #ccccff; } /* 4等: 薄い青 */
+td.rank-5 { background-color: #cc99cc; } /* 5等: 薄い紫 */
+
+/* 収支の色 */
+td.profit-positive { background-color: #ccffcc; } /* プラス: 薄い緑 */
+td.profit-negative { background-color: #ffcccc; } /* マイナス: 薄い赤 */
+
+/* 説明文のスタイル */
+.description {
+    background-color: #f9f9f9;
+    border-left: 4px solid #3498db;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    border-radius: 4px;
+}
+
+.description h2 {
     color: #2c3e50;
+    margin-bottom: 0.5rem;
+    font-size: 1.4rem;
+}
+
+.description p {
+    color: #34495e;
+    line-height: 1.6;
+}
+
+.description ul {
+    margin: 0.5rem 0 1rem 1.5rem;
+}
+
+.description li {
+    color: #34495e;
+    margin-bottom: 0.3rem;
+}
+
+/* 図（表のイメージ）のスタイル */
+.example-table {
+    margin-top: 1rem;
+}
+
+.example-table h3 {
+    color: #2c3e50;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.example-table table {
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+    border-collapse: collapse;
+}
+
+.example-table td {
+    padding: 0.5rem;
+    border: 1px solid #bdc3c7;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.example-table .caption {
+    text-align: center;
+    color: #7f8c8d;
+    font-style: italic;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+}
+
+/* 抽選結果表のスタイル */
+.draw-results table {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* 収支表のスタイル */
+.summary table {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
 }

@@ -1,23 +1,32 @@
-/* 誕生日シミュレーター固有のスタイル */
+/* ガチャシミュレーター固有のスタイル */
 .birthdays {
     margin-top: 2rem;
 }
 
-.settings {
+.settings, .additional-draws {
     text-align: center;
 }
 
-/* 誕生日ごとの色 */
-.color-0 { background-color: #ffcccc; }
-.color-1 { background-color: #ccffcc; }
-.color-2 { background-color: #ccccff; }
-.color-3 { background-color: #ffcc99; }
-.color-4 { background-color: #99ccff; }
-.color-5 { background-color: #cc99cc; }
-.color-6 { background-color: #ff99cc; }
-.color-7 { background-color: #99ffcc; }
-.color-8 { background-color: #ccff99; }
-.color-9 { background-color: #ffccff; }
+/* 景品ごとの色（色を濃くして視認性を向上） */
+td.color-0 { background-color: #ff9999; font-weight: bold; } /* 赤 */
+td.color-1 { background-color: #99ff99; font-weight: bold; } /* 緑 */
+td.color-2 { background-color: #9999ff; font-weight: bold; } /* 青 */
+td.color-3 { background-color: #ff9966; font-weight: bold; } /* オレンジ */
+td.color-4 { background-color: #66ccff; font-weight: bold; } /* 水色 */
+td.color-5 { background-color: #cc66cc; font-weight: bold; } /* 紫 */
+td.color-6 { background-color: #ff66cc; font-weight: bold; } /* ピンク */
+td.color-7 { background-color: #66ffcc; font-weight: bold; } /* シアン */
+td.color-8 { background-color: #ccff66; font-weight: bold; } /* 黄緑 */
+td.color-9 { background-color: #ff66ff; font-weight: bold; } /* マゼンタ */
+
+/* リセットボタンのスタイル */
+.reset-btn {
+    background-color: #e74c3c;
+}
+
+.reset-btn:hover:not(:disabled) {
+    background-color: #c0392b;
+}
 
 /* 説明文のスタイル */
 .description {

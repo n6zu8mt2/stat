@@ -1,136 +1,195 @@
+let recentDraws = []; // 直近10回分の抽選結果を保存
+
 function runSimulation() {
     // 入力値を取得
-    const numTickets = parseInt(document.getElementById('num-tickets').value);
+    const numbersInput = document.getElementById('numbers').value.trim();
+    const numDraws = parseInt(document.getElementById('num-draws').value);
 
     // 入力値のバリデーション
-    if (isNaN(numTickets) || numTickets < 1) {
-        alert('購入口数は1以上の値を指定してください。');
+    const numbers = numbersInput.split(/\s+/).map(Number);
+    if (numbers.length !== 6 || numbers.some(n => isNaN(n) || n < 1 || n > 43) || new Set(numbers).size !== 6) {
+        alert('1～43の範囲で異なる6つの数字をスペース区切りで入力してください。');
+        return;
+    }
+    if (isNaN(numDraws) || numDraws < 1) {
+        alert('抽選回数は1以上の値を指定してください。');
         return;
     }
 
-    // ボタンを無効化して処理中であることを示す
-    const button = document.querySelector('button');
-    button.disabled = true;
-    button.textContent = '処理中...';
+    // 当選回数の初期化
+    const results = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, miss: 0 };
+    recentDraws = []; // 抽選結果をリセット
 
-    // 購入費用を計算（1口200円）
-    const totalCost = numTickets * 200;
-
-    // ランダムに購入する数字を生成（各口ごとに6つの数字）
-    const tickets = [];
-    let currentTicket = 0;
-
-    function generateTickets() {
-        const batchSize = 1000; // 1回に処理するチケット数
-        const ticketsToProcess = Math.min(batchSize, numTickets - currentTicket);
-
-        for (let i = 0; i < ticketsToProcess; i++) {
-            const ticket = generateRandomNumbers(6);
-            tickets.push(ticket);
-            currentTicket++;
-        }
-
-        if (currentTicket < numTickets) {
-            // 次のバッチを処理
-            setTimeout(generateTickets, 0);
+    // 抽選実行
+    for (let draw = 0; draw < numDraws; draw++) {
+        // 本数字とボーナス数字を抽選
+        const { mainNumbers, bonusNumber } = drawNumbers();
+        // 当選判定
+        const rank = checkWin(numbers, mainNumbers, bonusNumber);
+        // 結果を記録
+        if (rank === 'miss') {
+            results.miss++;
         } else {
-            // チケット生成が完了したら抽選を実行
-            processDraw();
+            results[rank]++;
+        }
+
+        // 直近10回分の抽選結果を保存
+        if (recentDraws.length < 10) {
+            recentDraws.push({ draw: draw + 1, selected: numbers, main: mainNumbers, bonus: bonusNumber, rank });
+        } else {
+            recentDraws.shift();
+            recentDraws.push({ draw: draw + 1, selected: numbers, main: mainNumbers, bonus: bonusNumber, rank });
         }
     }
 
-    function processDraw() {
-        // 抽選を1回実行
-        let wins = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
-        let totalWinnings = 0;
-
-        // 本数字とボーナス数字を生成
-        const { mainNumbers, bonusNumber } = drawLoto6Numbers();
-
-        // 各口について当選判定
-        let currentIndex = 0;
-
-        function processTickets() {
-            const batchSize = 1000; // 1回に処理するチケット数
-            const ticketsToProcess = Math.min(batchSize, numTickets - currentIndex);
-
-            for (let i = 0; i < ticketsToProcess; i++) {
-                const ticket = tickets[currentIndex];
-                const matchedMain = ticket.filter(num => mainNumbers.includes(num)).length;
-                const matchedBonus = ticket.includes(bonusNumber);
-                let winAmount = 0;
-
-                if (matchedMain === 6) {
-                    wins[1]++;
-                    winAmount = 200000000; // 1等: 2億円
-                } else if (matchedMain === 5 && matchedBonus) {
-                    wins[2]++;
-                    winAmount = 10000000; // 2等: 1000万円
-                } else if (matchedMain === 5) {
-                    wins[3]++;
-                    winAmount = 300000; // 3等: 30万円
-                } else if (matchedMain === 4) {
-                    wins[4]++;
-                    winAmount = 6800; // 4等: 6800円
-                } else if (matchedMain === 3) {
-                    wins[5]++;
-                    winAmount = 1000; // 5等: 1000円
-                }
-
-                totalWinnings += winAmount;
-                currentIndex++;
-            }
-
-            if (currentIndex < numTickets) {
-                // 次のバッチを処理
-                setTimeout(processTickets, 0);
-            } else {
-                // 処理が完了したら結果を表示
-                const balance = totalWinnings - totalCost;
-
-                document.getElementById('total-cost').textContent = totalCost.toLocaleString() + '円';
-                document.getElementById('win-1st').textContent = wins[1] + '回';
-                document.getElementById('win-2nd').textContent = wins[2] + '回';
-                document.getElementById('win-3rd').textContent = wins[3] + '回';
-                document.getElementById('win-4th').textContent = wins[4] + '回';
-                document.getElementById('win-5th').textContent = wins[5] + '回';
-                document.getElementById('total-winnings').textContent = totalWinnings.toLocaleString() + '円プラス';
-                document.getElementById('total-spent').textContent = totalCost.toLocaleString() + '円使う';
-                document.getElementById('balance').textContent = (balance >= 0 ? '+' : '') + balance.toLocaleString() + '円';
-
-                // ボタンを再有効化
-                button.disabled = false;
-                button.textContent = 'シミュレーション実行';
-            }
-        }
-
-        // 最初のバッチを開始
-        setTimeout(processTickets, 0);
-    }
-
-    // チケット生成を開始
-    setTimeout(generateTickets, 0);
+    // 結果を表示
+    displayDrawResults();
+    const totalPrize = displayResults(results, numDraws);
+    displaySummary(totalPrize, numDraws);
 }
 
-// ランダムに異なる数字を生成する関数
-function generateRandomNumbers(count) {
-    const numbers = [];
-    const allNumbers = Array.from({ length: 43 }, (_, i) => i + 1);
-    while (numbers.length < count) {
-        const randomIndex = Math.floor(Math.random() * allNumbers.length);
-        numbers.push(allNumbers.splice(randomIndex, 1)[0]);
+// 数字を抽選
+function drawNumbers() {
+    const numbers = Array.from({ length: 43 }, (_, i) => i + 1);
+    const mainNumbers = [];
+    // 本数字6個を選択
+    for (let i = 0; i < 6; i++) {
+        const index = Math.floor(Math.random() * numbers.length);
+        mainNumbers.push(numbers.splice(index, 1)[0]);
     }
-    return numbers.sort((a, b) => a - b);
-}
-
-// ロト6の抽選を行う関数
-function drawLoto6Numbers() {
-    // 本数字をランダムに選ぶ（1～43から6個）
-    const mainNumbers = generateRandomNumbers(6);
-
-    // ボーナス数字を選ぶ（本数字と重複しない）
-    const remainingNumbers = Array.from({ length: 43 }, (_, i) => i + 1).filter(num => !mainNumbers.includes(num));
-    const bonusNumber = remainingNumbers[Math.floor(Math.random() * remainingNumbers.length)];
-
+    mainNumbers.sort((a, b) => a - b);
+    // ボーナス数字を選択（本数字と重複しない）
+    const bonusNumber = numbers[Math.floor(Math.random() * numbers.length)];
     return { mainNumbers, bonusNumber };
+}
+
+// 当選判定
+function checkWin(selectedNumbers, mainNumbers, bonusNumber) {
+    const matchedMain = selectedNumbers.filter(num => mainNumbers.includes(num)).length;
+    const matchedBonus = selectedNumbers.includes(bonusNumber);
+
+    if (matchedMain === 6) {
+        return 1; // 1等
+    } else if (matchedMain === 5) {
+        if (matchedBonus) {
+            return 2; // 2等
+        } else {
+            return 3; // 3等
+        }
+    } else if (matchedMain === 4) {
+        return 4; // 4等
+    } else if (matchedMain === 3) {
+        return 5; // 5等
+    } else {
+        return 'miss'; // ハズレ
+    }
+}
+
+// 抽選結果を表示
+function displayDrawResults() {
+    const tableBody = document.getElementById('draw-table-body');
+    tableBody.innerHTML = '';
+
+    recentDraws.forEach(draw => {
+        const row = document.createElement('tr');
+        const cells = [
+            draw.draw, // 回
+            draw.selected.join(', '), // 選択した数字
+            draw.main.join(', '), // 本数字
+            draw.bonus, // ボーナス数字
+            draw.rank === 'miss' ? 'ハズレ' : `${draw.rank}等` // 結果
+        ];
+
+        cells.forEach((cell, index) => {
+            const td = document.createElement('td');
+            td.textContent = cell;
+            if (index === 4 && draw.rank !== 'miss') {
+                td.classList.add(`rank-${draw.rank}`);
+            }
+            row.appendChild(td);
+        });
+        tableBody.appendChild(row);
+    });
+}
+
+// 当選結果を表示（総獲得金額を返す）
+function displayResults(results, numDraws) {
+    const tableBody = document.getElementById('result-body');
+    tableBody.innerHTML = '';
+
+    const prizes = {
+        1: 200000000, // 1等: 2億円
+        2: 10000000,  // 2等: 1000万円
+        3: 300000,    // 3等: 30万円
+        4: 6800,      // 4等: 6800円
+        5: 1000       // 5等: 1000円
+    };
+
+    const rows = [
+        { rank: '1等', count: results[1], prize: prizes[1] * results[1], class: 'rank-1' },
+        { rank: '2等', count: results[2], prize: prizes[2] * results[2], class: 'rank-2' },
+        { rank: '3等', count: results[3], prize: prizes[3] * results[3], class: 'rank-3' },
+        { rank: '4等', count: results[4], prize: prizes[4] * results[4], class: 'rank-4' },
+        { rank: '5等', count: results[5], prize: prizes[5] * results[5], class: 'rank-5' },
+        { rank: 'ハズレ', count: results.miss, prize: 0 }
+    ];
+
+    let totalPrize = 0;
+    rows.forEach(row => {
+        totalPrize += row.prize;
+        const tr = document.createElement('tr');
+        const tdRank = document.createElement('td');
+        const tdCount = document.createElement('td');
+        const tdPrize = document.createElement('td');
+        tdRank.textContent = row.rank;
+        tdCount.textContent = row.count;
+        tdPrize.textContent = `${row.prize.toLocaleString()}円`;
+        if (row.class) {
+            tdRank.classList.add(row.class);
+        }
+        tr.appendChild(tdRank);
+        tr.appendChild(tdCount);
+        tr.appendChild(tdPrize);
+        tableBody.appendChild(tr);
+    });
+
+    return totalPrize;
+}
+
+// 収支を表示
+function displaySummary(totalPrize, numDraws) {
+    const tableBody = document.getElementById('summary-body');
+    tableBody.innerHTML = '';
+
+    const costPerDraw = 200; // 1回あたりの購入費用（円）
+    const totalCost = numDraws * costPerDraw;
+    const profit = totalPrize - totalCost;
+
+    const rows = [
+        { label: '総獲得金額', value: totalPrize },
+        { label: '総購入費用', value: totalCost },
+        { label: '収支', value: profit }
+    ];
+
+    rows.forEach(row => {
+        const tr = document.createElement('tr');
+        const tdLabel = document.createElement('td');
+        const tdValue = document.createElement('td');
+        tdLabel.textContent = row.label;
+        if (row.label === '収支') {
+            tdValue.textContent = `${row.value >= 0 ? '+' : ''}${row.value.toLocaleString()}円`;
+            if (row.value > 0) {
+                tdLabel.classList.add('profit-positive');
+                tdValue.classList.add('profit-positive');
+            } else if (row.value < 0) {
+                tdLabel.classList.add('profit-negative');
+                tdValue.classList.add('profit-negative');
+            }
+        } else {
+            tdValue.textContent = `${row.value.toLocaleString()}円`;
+        }
+        tr.appendChild(tdLabel);
+        tr.appendChild(tdValue);
+        tableBody.appendChild(tr);
+    });
 }

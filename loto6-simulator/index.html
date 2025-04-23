@@ -14,8 +14,11 @@
             <h2>メニュー</h2>
             <ul>
                 <li><a href="../index.html">講義資料</a></li>
-                <li><a href="../loto6-simulator/index.html">ロト6シミュレーター</a></li>
-                <li><a href="../birthday-simulator/index.html">誕生日シミュレーター</a></li>
+                <li><a href="../loto6-simulator/index.html">ロト6シミュレーター(問題1.3 = 問題2.5)</a></li>
+                <li><a href="../birthday-simulator/index.html">誕生日シミュレーター(問題2.4)</a></li>
+                <li><a href="../gacha-simulator/index.html">ガチャシミュレーター(問題3.1)</a></li>
+                <li><a href="../coin-toss-simulator/index.html">コイントスシミュレーター(問題3.4・問題3.5)</a></li>
+                <li><a href="../seat-swap-simulator/index.html">席替えシミュレーター(問題3.6)</a></li>
             </ul>
         </div>
 
@@ -25,59 +28,85 @@
                 <h1>ロト6シミュレーター</h1>
             </div>
             <div class="container">
-                <!-- ルール説明 -->
-                <div class="rules">
-                    <h2>ロト6のルール説明</h2>
-                    <p>ロト6は、1から43までの数字の中から異なる6つの数字を選んで購入する数字選択式宝くじです。1口200円で、抽選では「本数字」6個と「ボーナス数字」1個が選ばれます。以下に、ルールと当選条件を詳しく説明します。</p>
-
-                    <h3>購入方法</h3>
-                    <p>1から43までの数字から、異なる6つの数字を選びます。1口200円で、好きな口数を購入できます。</p>
-
-                    <h3>抽選方法</h3>
-                    <p>抽選では、1から43までの数字からランダムに6つの「本数字」が選ばれます。さらに、本数字とは異なる1つの「ボーナス数字」が選ばれます。合計で7つの数字（本数字6個＋ボーナス数字1個）が抽選結果となります。</p>
-
-                    <h3>当選条件と賞金</h3>
-                    <p>当選は、選んだ6つの数字と抽選結果の一致数に応じて決まります。以下に各等級の条件と賞金をまとめます。</p>
+                <!-- 説明文 -->
+                <div class="description">
+                    <h2>🎟️ シミュレーションの説明</h2>
+                    <p>このシミュレーターでは、ロト6の抽選をシミュレーションし、選んだ数字がどの等に当選するかを試せます。指定した回数分抽選を行い、当選結果を集計します。以下の手順でシミュレーションを行います：</p>
                     <ul>
-                        <li><strong>1等（2億円）:</strong> 選んだ6つの数字がすべて本数字と一致した場合。<br>
-                            （例: 選んだ数字「1, 2, 3, 4, 5, 6」が本数字「1, 2, 3, 4, 5, 6」と完全一致）</li>
-                        <li><strong>2等（1000万円）:</strong> 選んだ6つの数字のうち5個が本数字と一致し、残りの1個がボーナス数字と一致した場合。<br>
-                            （例: 選んだ数字「1, 2, 3, 4, 5, 7」、本数字「1, 2, 3, 4, 5, 6」、ボーナス数字「7」）</li>
-                        <li><strong>3等（30万円）:</strong> 選んだ6つの数字のうち5個が本数字と一致した場合（ボーナス数字は関係なし）。<br>
-                            （例: 選んだ数字「1, 2, 3, 4, 5, 7」、本数字「1, 2, 3, 4, 5, 6」、ボーナス数字「8」）</li>
-                        <li><strong>4等（6800円）:</strong> 選んだ6つの数字のうち4個が本数字と一致した場合。<br>
-                            （例: 選んだ数字「1, 2, 3, 4, 7, 8」、本数字「1, 2, 3, 4, 5, 6」）</li>
-                        <li><strong>5等（1000円）:</strong> 選んだ6つの数字のうち3個が本数字と一致した場合。<br>
-                            （例: 選んだ数字「1, 2, 3, 7, 8, 9」、本数字「1, 2, 3, 4, 5, 6」）</li>
+                        <li>1～43から6つの数字を選ぶ（重複なし）。</li>
+                        <li>抽選を行い、本数字6個とボーナス数字1個を決定。</li>
+                        <li>選んだ数字と抽選結果を比較し、当選等を判定。</li>
+                        <li>上記を指定した回数（m回）繰り返し、当選回数を集計。</li>
+                        <li>総獲得金額、総購入費用（1回200円）、収支を表示。</li>
                     </ul>
-
-                    <h3>注意点</h3>
-                    <p>賞金額は理論値であり、実際のロト6では当選者数やキャリーオーバーによって変動します。このシミュレーターでは、賞金を固定値として計算しています。</p>
+                    <p>当選条件は以下の通りです：</p>
+                    <ul>
+                        <li>1等（2億円）: 6個すべて本数字と一致。</li>
+                        <li>2等（1000万円）: 5個が本数字と一致、残り1個がボーナス数字と一致。</li>
+                        <li>3等（30万円）: 5個が本数字と一致、残り1個がボーナス数字以外。</li>
+                        <li>4等（6800円）: 4個が本数字と一致。</li>
+                        <li>5等（1000円）: 3個が本数字と一致。</li>
+                    </ul>
                 </div>
 
                 <!-- シミュレーション設定 -->
                 <div class="settings">
                     <h2>シミュレーション設定</h2>
-                    <p>購入口数を指定して、1回の抽選を行います（1口200円）。</p>
                     <div class="input-group">
-                        <label for="num-tickets">購入口数（1以上）:</label>
-                        <input type="number" id="num-tickets" min="1" value="1">
+                        <label for="numbers">選ぶ数字（1～43の6つの数字、スペース区切り）:</label>
+                        <input type="text" id="numbers" value="5 12 19 25 33 42">
                     </div>
-                    <button onclick="runSimulation()">シミュレーション実行</button>
+                    <div class="input-group">
+                        <label for="num-draws">抽選回数 m（1以上）:</label>
+                        <input type="number" id="num-draws" min="1" value="1000">
+                    </div>
+                    <button onclick="runSimulation()">抽選開始</button>
                 </div>
 
-                <!-- シミュレーション結果 -->
-                <div class="result">
-                    <h2>シミュレーション結果</h2>
-                    <p><strong>購入費用:</strong> <span id="total-cost"></span></p>
-                    <p><strong>1等当選回数:</strong> <span id="win-1st"></span></p>
-                    <p><strong>2等当選回数:</strong> <span id="win-2nd"></span></p>
-                    <p><strong>3等当選回数:</strong> <span id="win-3rd"></span></p>
-                    <p><strong>4等当選回数:</strong> <span id="win-4th"></span></p>
-                    <p><strong>5等当選回数:</strong> <span id="win-5th"></span></p>
-                    <p><strong>総獲得金額:</strong> <span id="total-winnings"></span></p>
-                    <p><strong>総購入費用:</strong> <span id="total-spent"></span></p>
-                    <p><strong>収支:</strong> <span id="balance"></span></p>
+                <!-- 抽選結果 -->
+                <div class="draw-results">
+                    <h2>抽選結果（直近10回分）</h2>
+                    <table id="draw-table">
+                        <thead>
+                            <tr>
+                                <th>回</th>
+                                <th>選択した数字</th>
+                                <th>本数字</th>
+                                <th>ボーナス数字</th>
+                                <th>結果</th>
+                            </tr>
+                        </thead>
+                        <tbody id="draw-table-body"></tbody>
+                    </table>
+                </div>
+
+                <!-- 当選結果 -->
+                <div class="results">
+                    <h2>当選結果</h2>
+                    <table id="result-table">
+                        <thead>
+                            <tr>
+                                <th>等</th>
+                                <th>当選回数</th>
+                                <th>当選金額</th>
+                            </tr>
+                        </thead>
+                        <tbody id="result-body"></tbody>
+                    </table>
+                </div>
+
+                <!-- 収支 -->
+                <div class="summary">
+                    <h2>収支</h2>
+                    <table id="summary-table">
+                        <thead>
+                            <tr>
+                                <th>項目</th>
+                                <th>金額</th>
+                            </tr>
+                        </thead>
+                        <tbody id="summary-body"></tbody>
+                    </table>
                 </div>
             </div>
         </div>

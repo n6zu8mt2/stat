@@ -14,9 +14,11 @@
             <h2>メニュー</h2>
             <ul>
                 <li><a href="../index.html">講義資料</a></li>
-                <li><a href="../loto6-simulator/index.html">ロト6シミュレーター</a></li>
-                <li><a href="../birthday-simulator/index.html">誕生日シミュレーター</a></li>
-                <li><a href="../gacha-simulator/index.html">ガチャシミュレーター</a></li>
+                <li><a href="../loto6-simulator/index.html">ロト6シミュレーター(問題1.3 = 問題2.5)</a></li>
+                <li><a href="../birthday-simulator/index.html">誕生日シミュレーター(問題2.4)</a></li>
+                <li><a href="../gacha-simulator/index.html">ガチャシミュレーター(問題3.1)</a></li>
+                <li><a href="../coin-toss-simulator/index.html">コイントスシミュレーター(問題3.4・問題3.5)</a></li>
+                <li><a href="../seat-swap-simulator/index.html">席替えシミュレーター(問題3.6)</a></li>
             </ul>
         </div>
 
@@ -26,7 +28,19 @@
                 <h1>ガチャシミュレーター</h1>
             </div>
             <div class="container">
-                <p>n種類の景品からm回ガチャを引いて、どの景品が当たるか試してみましょう！</p>
+                <!-- 説明文 -->
+                <div class="description">
+                    <h2>🎰 シミュレーションの説明</h2>
+                    <p>n種類の景品からm回ガチャを引いて、どの景品が当たるか試してみましょう！ガチャの結果を表形式で表示し、集めた景品の種類数を集計します。以下の手順でシミュレーションを行います：</p>
+                    <ul>
+                        <li>景品の種類数（n）とガチャを引く回数（m）を指定（デフォルト: n=5, m=5）。</li>
+                        <li>各景品が1/nの確率で当たるガチャをm回引く。</li>
+                        <li>結果を表形式で表示（各景品に色を付けて見やすく）。</li>
+                        <li>総ガチャ回数と集めた景品の種類数を表示。</li>
+                        <li>追加でk回ガチャを引く機能や、リセット機能も利用可能。</li>
+                    </ul>
+                    <p>このシミュレーターは、ガシャポンやランダム缶バッジなどをモデル化したものです。これらの景品を全種類コンプリートするには何回引けばよいのでしょうか？</p>
+                </div>
 
                 <!-- シミュレーション設定 -->
                 <div class="settings">

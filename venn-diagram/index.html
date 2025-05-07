@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ベン図</title>
+    <link rel="stylesheet" href="../common.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <!-- サイドバー -->
+        <div class="sidebar">
+            <h2>メニュー</h2>
+            <ul>
+                <li><a href="../index.html">講義資料</a></li>
+                <li><a href="../loto6-simulator/index.html">ロト6シミュレーター(問題1.3 = 問題2.5)</a></li>
+                <li><a href="../birthday-simulator/index.html">誕生日シミュレーター(問題2.4)</a></li>
+                <li><a href="../gacha-simulator/index.html">ガチャシミュレーター(問題3.1)</a></li>
+                <li><a href="../coin-toss-simulator/index.html">コイントスシミュレーター(問題3.4・3.5・4.2・4.3)</a></li>
+                <li><a href="../seat-swap-simulator/index.html">席替えシミュレーター(問題3.6 = 問題4.5)</a></li>
+                <li><a href="../venn-diagram/index.html">ベン図(問題4.4)</a></li>
+            </ul>
+        </div>
+
+        <!-- メインコンテンツ -->
+        <div class="main-content">
+            <div class="header">
+                <h1>ベン図</h1>
+            </div>
+            <div class="container">
+                <!-- 説明文 -->
+                <div class="description">
+                    <h2>🪑 ベン図</h2>
+                    <p>ベン図(Venn diagram)は、複数の集合の関係を視覚的に表現するための図です。1880年頃にイギリスの数学者ジョン・ベン (John Venn, 1834–1923) によって有名となりました。
+
+                    以下では、2つから7つの集合のベン図を示します。なお、図は統計ソフトRのvennライブラリーを用いて作成しています。
+                    統計ソフトRに関する詳細は<a href="https://statistics.co.jp/reference/software_R/free_software-R.htm" target="_blank">統計分析フリーソフト「R」のマニュアル</a>を参照してください。
+                    </p>
+                </div>
+
+                <!-- 画像セクション -->
+                <div class="image-section">
+                    <h2>2つの集合のベン図</h2>
+                    <img src="./2-venn.png" alt="2つの集合のベン図">
+                    <p>
+                        このベン図は、2つの集合（赤と青）を表しています。どの集合に属しているかに応じて、長方形内を2✕2=4個の領域に分割しています。詳しくは以下のように要素が分布しています：
+                        <ul>
+                            <li>赤のみ: 1</li>
+                            <li>青のみ: 2</li>
+                            <li>赤と青の交わり: 12</li>
+                        </ul>
+                    </p>
+                </div>
+
+                <div class="image-section">
+                    <h2>3つの集合のベン図</h2>
+                    <img src="./3-venn.png" alt="3つの集合のベン図">
+                    <p>
+                        このベン図は、3つの集合（赤、緑、青）を表しています。
+                        どの集合に属しているかに応じて、長方形内を2✕2✕2=8個の領域に分割しています。詳しくは以下のように要素が分布しています：
+                        <ul>
+                            <li>赤のみ: 1</li>
+                            <li>緑のみ: 2</li>
+                            <li>青のみ: 3</li>
+                            <li>赤と緑の交わり: 12</li>
+                            <li>緑と青の交わり: 23</li>
+                            <li>赤と青の交わり: 13</li>
+                            <li>3つの集合の交わり: 123</li>
+                        </ul>
+                    </p>
+                </div>
+
+                <div class="image-section">
+                    <h2>4つの集合のベン図</h2>
+                    <img src="./4-venn.png" alt="4つの集合のベン図">
+                    <p>
+                        このベン図は、4つの集合（赤、黄、緑、青）を表しています。どの集合に属しているかに応じて、長方形内を2✕2✕2✕2=16個の領域に分割しています。詳しくは以下のように要素が分布しています：
+                        <ul>
+                            <li>赤のみ: 1</li>
+                            <li>黄のみ: 2</li>
+                            <li>緑のみ: 3</li>
+                            <li>青のみ: 4</li>
+                            <li>赤と黄の交わり: 12</li>
+                            <li>黄と緑の交わり: 23</li>
+                            <li>緑と青の交わり: 34</li>
+                            <li>青と赤の交わり: 14</li>
+                            <li>2つ以上の交わり: 123, 124, 134, 234, 1234 など</li>
+                        </ul>
+                    </p>
+                </div>
+
+                <div class="image-section">
+                    <h2>5つの集合のベン図</h2>
+                    <img src="./5-venn.png" alt="5つの集合のベン図">
+                    <p>
+                        このベン図は、5つの集合（赤、オレンジ、薄緑、濃緑、青）を表しています。どの集合に属しているかに応じて、長方形内を2✕2✕2✕2✕2=32個の領域に分割しています。
+                        また、各集合を表す図形は、円ではありません。ここまでくると、視覚的に見てもよくわからなくなってきています。詳しくは以下のように要素が分布しています：
+                        <ul>
+                            <li>赤のみ: 1</li>
+                            <li>オレンジのみ: 2</li>
+                            <li>薄緑のみ: 3</li>
+                            <li>濃緑のみ: 4</li>
+                            <li>青のみ: 5</li>
+                            <li>2つ以上の交わり: 12, 13, 14, 15, 23, 24, 25, 34, 35, 45 など</li>
+                            <li>3つ以上の交わり: 123, 124, 125, 134, 135, 145, 234, 235, 245, 345 など</li>
+                            <li>4つ以上の交わり: 1234, 1235, 1245, 1345, 2345 など</li>
+                            <li>5つの集合の交わり: 12345</li>
+                        </ul>
+                    </p>
+                </div>
+
+                <div class="image-section">
+                    <h2>6つの集合のベン図</h2>
+                    <img src="./6-venn.png" alt="6つの集合のベン図">
+                    <p>
+                        このベン図は、6つの集合を表しています。長方形内を2✕2✕2✕2✕2✕2=64個の領域に分割しています。また、各集合を表す図形は、円ではありません。ここまでくると、視覚的に見てもよくわからなくなってきています。
+                    </p>
+                </div>
+
+                <div class="image-section">
+                    <h2>7つの集合のベン図</h2>
+                    <img src="./7-venn.png" alt="7つの集合のベン図">
+                    <p>
+                        このベン図は、7つの集合を表しています。長方形内を2✕2✕2✕2✕2✕2✕2=128個の領域に分割しています。また、各集合を表す図形は、円ではありません。ここまでくると、視覚的に見てもよくわからなくなってきています。
+                        
+                        <a href="https://moebio.com/research/sevensets/" target="_blank">このWEBページ</a>では、各領域にマウスを乗せると、どの集合に属するのか視覚的に分かるようになっています。が、それでも複雑でかなりわかりにくいです。
+                    </p>
+                </div>
+            </div>
+        </div>
+</body>
+</html>

@@ -1,0 +1,127 @@
+.controls {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.control-group {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.right-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.right-group .input-group {
+    margin-bottom: 0; /* common.css の margin を上書き */
+}
+
+.right-group input[type="number"] {
+    height: 34px; /* ボタンの高さに合わせる */
+    padding: 0.5rem; /* common.css と一致 */
+    box-sizing: border-box; /* ボーダーを含めた高さ調整 */
+}
+
+.right-group button {
+    height: 34px; /* 入力欄の高さに合わせる */
+    padding: 0.5rem 1rem; /* common.css と一致 */
+    margin-left: 10px;
+    line-height: 1; /* テキストの垂直位置を調整 */
+}
+
+/* 説明文のスタイル */
+.description {
+    background-color: #f9f9f9;
+    border-left: 4px solid #3498db;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    border-radius: 4px;
+}
+
+/* トグルスイッチのスタイル */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #3498db;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.control-group label[for="tableToggle"] {
+    margin-right: 10px;
+    font-weight: normal;
+}
+
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 10px;
+}
+
+#resultTable {
+    display: block;
+}
+
+#resultTable .success {
+    background-color: #ffeb3b;
+    font-weight: bold;
+}
+
+#summary {
+    text-align: center;
+    font-size: 16px;
+    color: #000000;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.spinning {
+    animation: spin 1s linear infinite;
+}

@@ -19,20 +19,20 @@
 }
 
 .right-group .input-group {
-    margin-bottom: 0; /* common.css の margin を上書き */
+    margin-bottom: 0;
 }
 
 .right-group input[type="number"] {
-    height: 34px; /* ボタンの高さに合わせる */
-    padding: 0.5rem; /* common.css と一致 */
-    box-sizing: border-box; /* ボーダーを含めた高さ調整 */
+    height: 34px;
+    padding: 0.5rem;
+    box-sizing: border-box;
 }
 
 .right-group button {
-    height: 34px; /* 入力欄の高さに合わせる */
-    padding: 0.5rem 1rem; /* common.css と一致 */
+    height: 34px;
+    padding: 0.5rem 1rem;
     margin-left: 10px;
-    line-height: 1; /* テキストの垂直位置を調整 */
+    line-height: 1;
 }
 
 /* 説明文のスタイル */
@@ -115,6 +115,13 @@ input:checked + .slider:before {
     text-align: center;
     font-size: 16px;
     color: #000000;
+}
+
+#simulationResult {
+    text-align: center;
+    font-size: 16px;
+    color: #000000;
+    margin-top: 1rem;
 }
 
 @keyframes spin {

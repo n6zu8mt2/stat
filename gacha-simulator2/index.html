@@ -30,12 +30,6 @@
                 <h1>ガチャシミュレーター</h1>
             </div>
             <div class="container">
-                <!-- 説明文 -->
-                <div class="description">
-                    <h2>🪑 シミュレーションの説明</h2>
-                    <p>欲しいキャラの排出率が0.01 = 1%のガチャを引くとき、何回引けば欲しいキャラが出るかをシミュレーションします。</p>
-                </div>
-
                 <div class="controls">
                     <div class="control-group">
                         <label>欲しいキャラが出る確率</label>
@@ -43,19 +37,17 @@
                             <div class="input-group">
                                 <input type="number" id="probability" step="0.01" min="0.01" max="0.99" value="0.01">
                             </div>
-                            <button onclick="drawTen()">が排出率の10連ガチャを引く</button>
+                            <button onclick="drawTen()">10連ガチャを引く</button>
+                            <p class="supplement">0.01と入力すると1%の排出率となる。</p>
                         </div>
                     </div>
-                    <p style="margin-top: -30px;margin-bottom: 8px;",class="supplement">　0.01と入力すると1%の排出率となります。</p>
                     <div class="control-group">
                         <label>追加でガチャを引く回数</label>
                         <div class="right-group">
                             <div class="input-group">
                                 <input type="number" id="extraDraws" step="1" min="1" value="10">
                             </div>
-                            <div style="width: 0.51em;">
-                            </div>
-                            <button onclick="drawM()">回だけ追加でガチャを引く</button>
+                            <button onclick="drawM()">追加でガチャを引く</button>
                         </div>
                     </div>
                     <div class="control-group">
@@ -65,14 +57,28 @@
                             <span class="slider"></span>
                         </label>
                     </div>
-                    <p style="margin-top: -30px;margin-bottom: 8px;",class="supplement">　ガチャの回数が大きくなりすぎると重くなります。</p>
                     <div class="button-group">
                         <button onclick="drawUntilSuccess()">欲しいキャラが出るまで引く</button>
                         <button onclick="reset()">リセット</button>
                     </div>
+                    <div class="control-group">
+                        <label>複数回シミュレーション</label>
+                        <div class="right-group">
+                            <div class="input-group">
+                                <input type="number" id="drawsPerSimulation" step="1" min="1" value="100">
+                            </div>
+                            連ガチャを
+                            <div class="input-group">
+                                <input type="number" id="simulationCount" step="1" min="1" value="1000">
+                            </div>
+                            回引く
+                            <button onclick="simulateMultipleDraws()">シミュレーション実行</button>
+                        </div>
+                    </div>
                 </div>
                 <div id="resultTable"></div>
                 <div id="summary"></div>
+                <div id="simulationResult"></div>
             </div>
         </div>
     </div>

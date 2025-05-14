@@ -13,6 +13,16 @@ function getExtraDraws() {
     return isNaN(m) || m < 1 ? 10 : m;
 }
 
+function getDrawsPerSimulation() {
+    const a = parseInt(document.getElementById('drawsPerSimulation').value);
+    return isNaN(a) || a < 1 ? 100 : a;
+}
+
+function getSimulationCount() {
+    const b = parseInt(document.getElementById('simulationCount').value);
+    return isNaN(b) || b < 1 ? 1000 : b;
+}
+
 function draw() {
     const p = getProbability();
     totalDraws++;
@@ -52,6 +62,27 @@ function drawUntilSuccess() {
             alert(`欲しいキャラが${totalDraws}回で出ました！`);
         }
     }, 100);
+}
+
+function simulateMultipleDraws() {
+    const a = getDrawsPerSimulation();
+    const b = getSimulationCount();
+    const p = getProbability();
+    let successSimulations = 0;
+
+    for (let i = 0; i < b; i++) {
+        let hasSuccess = false;
+        for (let j = 0; j < a; j++) {
+            if (Math.random() < p) {
+                hasSuccess = true;
+                break;
+            }
+        }
+        if (hasSuccess) successSimulations++;
+    }
+
+    const successRate = (successSimulations / b * 100).toFixed(2);
+    document.getElementById('simulationResult').innerHTML = `${a}連ガチャを${b}回引いたとき、欲しいキャラが1回以上でた回数は${successSimulations}回 (成功率: ${successRate}%)`;
 }
 
 function updateTable() {
@@ -99,6 +130,7 @@ function reset() {
     results = [];
     document.getElementById('resultTable').innerHTML = '';
     document.getElementById('summary').innerHTML = '';
+    document.getElementById('simulationResult').innerHTML = '';
     updateTable();
 }
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ガチャシミュレーター</title>
+    <title>感染症確率シミュレーター</title>
     <link rel="stylesheet" href="../common.css">
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -28,61 +28,62 @@
         <!-- メインコンテンツ -->
         <div class="main-content">
             <div class="header">
-                <h1>ガチャシミュレーター</h1>
+                <h1>感染症確率シミュレーター</h1>
             </div>
             <div class="container">
+                <div class="description">
+                    <h2>🩺 シミュレーションの説明</h2>
+                    <p>病気aにかかっている確率、検査の陽性・陰性確率を入力し、検査結果が陽性である条件のもとで病気aにかかっている確率を計算します。ベイズの定理を使用して計算を行います。</p>
+                </div>
                 <div class="controls">
                     <div class="control-group">
-                        <label>欲しいキャラが出る確率</label>
+                        <label>病気aにかかっている確率 (p)</label>
                         <div class="right-group">
                             <div class="input-group">
-                                <input type="number" id="probability" step="0.01" min="0.01" max="0.99" value="0.01">
+                                <input type="number" id="diseaseProbability" step="0.01" min="0" max="1" value="0.1">
                             </div>
-                            <button onclick="drawTen()">が排出率の10連ガチャを引く</button>
-                        </div>
-                    </div>
-                    <p style="margin-top: -30px;margin-bottom: 8px;",class="supplement">　0.01と入力すると1%の排出率となります。</p>
-                    <div class="control-group">
-                        <label>追加でガチャを引く回数</label>
-                        <div class="right-group">
-                            <div class="input-group">
-                                <input type="number" id="extraDraws" step="1" min="1" value="10">
-                            </div>
-                            <div style="width: 0.51em;">
-                            </div>
-                            <button onclick="drawM()">回だけ追加でガチャを引く</button>
+                            <p class="supplement">0.1と入力すると10%の確率となります。</p>
                         </div>
                     </div>
                     <div class="control-group">
-                        <label for="tableToggle">ガチャ結果の一覧表を表示</label>
+                        <label>病気aの人が陽性となる確率 (q)</label>
+                        <div class="right-group">
+                            <div class="input-group">
+                                <input type="number" id="positiveGivenDisease" step="0.01" min="0" max="1" value="0.9">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label>病気aでない人が陰性となる確率 (r)</label>
+                        <div class="right-group">
+                            <div class="input-group">
+                                <input type="number" id="negativeGivenNoDisease" step="0.01" min="0" max="1" value="0.7">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label>刻み幅 (step)</label>
+                        <div class="right-group">
+                            <div class="input-group">
+                                <input type="number" id="stepSize" step="0.01" min="0.01" max="0.5" value="0.01">
+                            </div>
+                            <p class="supplement">0.01刻みでpを変化させます。</p>
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label for="tableToggle">p を変化させた一覧表を表示</label>
                         <label class="switch">
-                            <input type="checkbox" id="tableToggle" checked>
+                            <input type="checkbox" id="tableToggle">
                             <span class="slider"></span>
                         </label>
                     </div>
-                    <p style="margin-top: -30px;margin-bottom: 8px;",class="supplement">　ガチャの回数が大きくなりすぎると重くなります。</p>
                     <div class="button-group">
-                        <button onclick="drawUntilSuccess()">欲しいキャラが出るまで引く</button>
+                        <button onclick="calculateProbability()">確率を計算</button>
                         <button onclick="reset()">リセット</button>
                     </div>
-                    <div class="control-group">
-                        <label>複数回シミュレーション</label>
-                        <div class="right-group">
-                            <div class="input-group">
-                                <input type="number" id="drawsPerSimulation" step="1" min="1" value="100">
-                            </div>
-                            連ガチャを
-                            <div class="input-group">
-                                <input type="number" id="simulationCount" step="1" min="1" value="1000">
-                            </div>
-                            回引く
-                            <button onclick="simulateMultipleDraws()">シミュレーション実行</button>
-                        </div>
-                    </div>
                 </div>
-                <div id="resultTable"></div>
-                <div id="summary"></div>
-                <div id="simulationResult"></div>
+                <div id="result"></div>
+                <div id="probabilityTable"></div>
             </div>
         </div>
     </div>

@@ -35,14 +35,6 @@
     line-height: 1;
 }
 
-/* 説明文のスタイル */
-.description {
-    background-color: #f9f9f9;
-    border-left: 4px solid #3498db;
-    padding: 1rem;
-    margin-bottom: 2rem;
-    border-radius: 4px;
-}
 
 /* トグルスイッチのスタイル */
 .switch {

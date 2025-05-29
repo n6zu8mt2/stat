@@ -119,7 +119,49 @@ ul {
 
 ul li {
     margin-bottom: 0.5rem;
+    color: #34495e;
 }
+
+
+/* 説明文のスタイル */
+.description {
+    background-color: #f9f9f9;
+    border-left: 4px solid #3498db;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    border-radius: 4px;
+}
+
+.description h2 {
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+    font-size: 1.4rem;
+}
+
+.description p {
+    color: #34495e;
+    line-height: 1.6;
+}
+
+.description ul {
+    margin: 0.5rem 0 1rem 1.5rem;
+}
+
+.description li {
+    color: #34495e;
+    margin-bottom: 0.3rem;
+}
+
+.description a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+.description a:hover {
+    text-decoration: underline;
+}
+
+
 
 /* ボタン */
 button {

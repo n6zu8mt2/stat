@@ -1,47 +1,31 @@
-.controls {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-bottom: 20px;
-}
-
-.control-group {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px;
-}
-
-.right-group {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.right-group .input-group {
-    margin-bottom: 0;
-}
-
-.right-group input[type="number"] {
-    height: 34px;
-    padding: 0.5rem;
-    box-sizing: border-box;
-}
-
-.right-group button {
-    height: 34px;
-    padding: 0.5rem 1rem;
-    margin-left: 10px;
-    line-height: 1;
-}
-
-/* 説明文のスタイル */
-.description {
-    background-color: #f9f9f9;
-    border-left: 4px solid #3498db;
+/* ベイズの定理の式表示エリアのスタイル */
+.formula-description {
+    background-color: #eef7ff; /* 少し薄い青系の背景 */
+    border-left: 4px solid #1abc9c; /* 緑系のボーダー */
     padding: 1rem;
     margin-bottom: 2rem;
     border-radius: 4px;
+    font-size: 0.95em; /* 少しフォントサイズを調整 */
+}
+
+.formula-description h3 {
+    margin-top: 0;
+    color: #2c3e50;
+}
+
+.formula-description p {
+    line-height: 1.6;
+    color: #34495e;
+}
+
+.formula-description ul {
+    margin-left: 20px;
+    list-style-type: disc;
+}
+
+.formula-description ul li {
+    margin-bottom: 0.5rem; /* 既存のスタイル（もしあれば） */
+    color: #34495e;      /* ← この行を追記または変更 */
 }
 
 /* トグルスイッチのスタイル */
@@ -107,20 +91,39 @@ input:checked + .slider:before {
     font-size: 16px;
     color: #000000;
     margin-top: 1rem;
+    font-weight: bold; /* 結果を少し強調 */
 }
 
 #probabilityTable {
-    display: none;
+    display: none; /* 初期状態は非表示 */
+    overflow-x: auto; /* テーブルが横にはみ出る場合スクロール */
 }
 
 #probabilityTable table {
-    width: 50%;
+    width: auto; /* 内容に合わせて幅を自動調整 */
+    min-width: 300px; /* 最小幅 */
     margin: 1rem auto;
     border-collapse: collapse;
+    border: 1px solid #ddd; /* テーブル全体に枠線 */
 }
 
 #probabilityTable th, #probabilityTable td {
-    padding: 0.5rem;
-    border: 1px solid #ddd;
+    padding: 0.75rem; /* パディングを少し増やす */
     text-align: center;
+    border: 1px solid #ddd;
 }
+
+#probabilityTable th {
+    background-color: #f2f2f2; /* ヘッダーの背景色 */
+    font-weight: bold;
+}
+
+#canvasContainer {
+    display: none; /* 初期状態は非表示 */
+    margin: 1rem auto;
+    width: fit-content; /* Canvasのサイズに合わせる */
+    padding: 10px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 軽い影 */
+}
+

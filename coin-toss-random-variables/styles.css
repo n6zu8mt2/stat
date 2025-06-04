@@ -1,0 +1,212 @@
+/* 基本的なページレイアウトや共通スタイルは common.css に依存することを想定 */
+
+.container {
+    padding: 1rem;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.description, .settings, .results-section {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background-color: #f9f9f9;
+    border-radius: 6px;
+    border-left: 5px solid #3498db; /* 強調用の左ボーダー */
+}
+
+.description h2, .settings h2, .results-section h2 {
+    margin-top: 0;
+    color: #2c3e50; /* ダークブルー系の見出し色 */
+    border-bottom: 2px solid #3498db; /* 見出しの下線 */
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.results-section h3 {
+    color: #34495e; /* やや暗めの見出し色 */
+    margin-top: 1.5rem;
+    margin-bottom: 0.8rem;
+}
+
+
+.control-group {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* ラベルと入力フィールドの間隔 */
+    margin-bottom: 1rem;
+}
+
+.control-group label {
+    flex-basis: 200px; /* ラベルの幅を固定 */
+    font-weight: bold;
+    color: #555;
+}
+
+.control-group input[type="number"] {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100px; /* 入力フィールドの幅 */
+    text-align: right;
+}
+
+.button-group {
+    text-align: center; /* ボタンを中央揃え */
+    margin-top: 1.5rem;
+}
+
+.button-group button {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    color: #fff;
+    background-color: #3498db; /* プライマリボタンの色 */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button-group button:hover {
+    background-color: #2980b9; /* ホバー時の色 */
+}
+
+/* テーブルのスタイル */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+th, td {
+    padding: 0.75rem; /* パディングを少し広めに */
+    border: 1px solid #ddd; /* ボーダーの色を少し薄く */
+    text-align: center;
+}
+
+thead th {
+    background-color: #e9ecef; /* ヘッダーの背景色 */
+    color: #495057; /* ヘッダーの文字色 */
+    font-weight: bold;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f8f9fa; /* 偶数行の背景色 */
+}
+
+tbody tr:hover {
+    background-color: #e2e6ea; /* ホバー時の行の背景色 */
+}
+
+/* 特定のテーブルの調整 */
+#individualTrialsTableContainer,
+#summaryTableContainer,
+#statisticsContainer {
+    margin-bottom: 2rem;
+}
+
+#summaryTable td:first-child,
+#summaryTable th:first-child {
+    text-align: left; /* 1列目の項目名を左揃えに */
+    font-weight: bold;
+    background-color: #f2f2f2; /* 1列目の背景を少し変える */
+}
+
+
+/* styles.css (既存の disease-probability-simulator のものと共存または調整) */
+/* ... (既存のスタイル) ... */
+
+.formula-description {
+    background-color: #eef7ff;
+    border-left: 4px solid #1abc9c;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    border-radius: 4px;
+    font-size: 0.95em;
+}
+
+.formula-description h3 {
+    margin-top: 0;
+    color: #2c3e50;
+}
+
+.formula-description p {
+    line-height: 1.6;
+}
+
+.formula-description ul {
+    margin-left: 20px;
+    list-style-type: disc;
+}
+
+.formula-description ul li {
+    margin-bottom: 0.5rem;
+    /* color: gray;  この行は前の指示で問題があったので、必要なら再検討 */
+}
+
+#result { /* 感染症シミュレーターの要素だが、スタイルが競合しないように注意 */
+    text-align: center;
+    font-size: 16px;
+    /* color: #000000; */ /* common.css や body で指定されていれば不要かも */
+    margin-top: 1rem;
+    font-weight: bold;
+}
+
+
+/* styles.css の末尾に追加 */
+
+.toggle-button-container {
+    text-align: center; /* ボタンを中央揃え */
+    margin-bottom: 1rem; /* テーブルとの間隔 */
+}
+
+#toggleIndividualTrials {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+    color: #fff;
+    background-color: #5cb85c; /* 少し違うボタン色（例: 緑） */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#toggleIndividualTrials:hover {
+    background-color: #4cae4c;
+}
+
+
+/* styles.css の末尾などに追加 */
+
+/* 「各試行の結果」テーブルの行の背景色（表の枚数に応じて） */
+#individualTrialsTable tbody tr.heads-count-0 td {
+    background-color: #ffebee; /* 薄い赤系 (0枚) */
+}
+#individualTrialsTable tbody tr.heads-count-1 td {
+    background-color: #e8f5e9; /* 薄い緑系 (1枚) */
+}
+#individualTrialsTable tbody tr.heads-count-2 td {
+    background-color: #e3f2fd; /* 薄い青系 (2枚) */
+}
+#individualTrialsTable tbody tr.heads-count-3 td {
+    background-color: #fffde7; /* 薄い黄色系 (3枚) */
+}
+#individualTrialsTable tbody tr.heads-count-4 td {
+    background-color: #f3e5f5; /* 薄い紫系 (4枚) */
+}
+/* nが5以上になる場合は、適宜色を追加してください */
+#individualTrialsTable tbody tr.heads-count-default td {
+    background-color: #fafafa; /* デフォルト (上記以外、またはnが大きい場合) */
+}
+
+/* ホバー時のスタイルよりも優先させるために、少し詳細度を上げることも検討 */
+#individualTrialsTable tbody tr:hover td {
+    background-color: #e0e0e0; /* ホバー時の共通色 (既存のスタイルと調整) */
+}
+#individualTrialsTable tbody tr.heads-count-0:hover td { background-color: #ffcdd2; }
+#individualTrialsTable tbody tr.heads-count-1:hover td { background-color: #c8e6c9; }
+#individualTrialsTable tbody tr.heads-count-2:hover td { background-color: #bbdefb; }
+#individualTrialsTable tbody tr.heads-count-3:hover td { background-color: #fff9c4; }
+#individualTrialsTable tbody tr.heads-count-4:hover td { background-color: #e1bee7; }
+#individualTrialsTable tbody tr.heads-count-default:hover td { background-color: #f0f0f0; }

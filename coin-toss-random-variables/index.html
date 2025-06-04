@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>コイン投げの確率変数シミュレーター</title>
+    <link rel="stylesheet" href="../common.css">
+    <link rel="stylesheet" href="styles.css">
+    <script>
+    MathJax = {
+    loader: {load: ['[tex]/physics']},
+    tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        packages: {'[+]': ['physics']}
+    },
+    chtml: {
+        matchFontHeight: false
+    }
+    };
+    </script>
+    <script id="MathJax-script" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.1.0/es5/tex-chtml-full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.js">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.2/p5.min.js"></script>
+</head>
+<body>
+    <div class="page-wrapper">
+        <!-- サイドバー -->
+        <div class="sidebar">
+            <h2>メニュー</h2>
+            <ul>
+                <li><a href="../index.html" target="_self">講義資料</a></li>
+                <li><a href="../loto6-simulator/index.html" target="_self">ロト6シミュレーター(問題1.3 = 問題2.5)</a></li>
+                <li><a href="../birthday-simulator/index.html" target="_self">誕生日シミュレーター(問題2.4)</a></li>
+                <li><a href="../gacha-simulator/index.html" target="_self">ガチャシミュレーター(問題3.1)</a></li>
+                <li><a href="../coin-toss-simulator/index.html" target="_self">コイントスシミュレーター(問題3.4・3.5・4.2・4.3)</a></li>
+                <li><a href="../venn-diagram/index.html" target="_self">ベン図(問題4.4)</a></li>
+                <li><a href="../seat-swap-simulator/index.html" target="_self">席替えシミュレーター(問題3.6 = 問題4.5)</a></li>
+                <li><a href="../gacha-simulator2/index.html" target="_self">ガチャシミュレーター(問題5.5)</a></li>
+                <li><a href="../disease-probability-simulator/index.html" target="_self">感染症確率シミュレーター(問題7.5)</a></li>
+                <li><a href="../coin-toss-random-variables/index.html" target="_self">コイン投げの確率変数シミュレーター(問題8.3)</a></li>
+            </ul>
+        </div>
+
+        <div class="main-content">
+            <div class="header">
+                <h1>コイン投げの確率変数シミュレーター</h1>
+            </div>
+            <div class="container">
+                <div class="description">
+                    <h2>📘 シミュレーションの説明</h2>
+                    <p>コインを $n$ 枚投げたときに、$(\text{表が出た枚数}) \times m$ 円を得られるとゲームを行います。確率変数 $X$ を、各試行で得られた金額を表すものとします。
+                    $$ X = (\text{表が出た枚数}) \times m $$
+                        このシミュレーターでは、指定した回数だけシミュレーションを行い、$X$ の実現値の分布や、その期待値・分散・標準偏差の理論値と実験値を比較します。</p>
+                    <ul>
+                        <li>一度に投げるコインの枚数（デフォルト: $2$ 枚）</li>
+                        <li>表が出た回数$1$回あたりに得られる金額（デフォルト: 100円）</li>
+                        <li>シミュレーションの試行回数（デフォルト: $1000$回）</li>
+                    </ul>
+                </div>
+
+                <div class="settings">
+                    <h2>シミュレーション設定</h2>
+                    <div class="control-group">
+                        <label for="numCoins_n">コインの枚数:</label>
+                        <input type="number" id="numCoins_n" value="2" min="1">
+                    </div>
+                    <div class="control-group">
+                        <label for="multiplier_m">表が $1$ 枚ごとに◯円:</label>
+                        <input type="number" id="multiplier_m" value="100" min="1">
+                    </div>
+                    <div class="control-group">
+                        <label for="numTrials_k">シミュレーション回数:</label>
+                        <input type="number" id="numTrials_k" value="1000" min="1">
+                    </div>
+                    <div class="button-group">
+                        <button onclick="runSimulation()">シミュレーション実行</button>
+                    </div>
+                </div>
+
+                <div class="results-section">
+                    <h2>シミュレーション結果</h2>
+                    
+                    <div class="toggle-button-container">
+                        <button id="toggleIndividualTrials" onclick="toggleIndividualTrialsTable()">各試行の結果を表示する</button>
+                    </div>
+
+                    <div id="individualTrialsTableContainer" style="display: none;"> <h3>各試行の結果 (最初の$100$回まで)</h3>
+                        <table id="individualTrialsTable">
+                            <thead>
+                                <tr>
+                                    <th>試行回</th>
+                                    <th>表が出た枚数</th>
+                                    <th>$X$ の値 (円)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="individualTrialsBody"></tbody>
+                        </table>
+                    </div>
+
+                    <div id="summaryTableContainer">
+                        <h3>確率変数Xの実現回数</h3>
+                        <table id="summaryTable">
+                            <tbody id="summaryBody">
+                                </tbody>
+                        </table>
+                    </div>
+
+                    <div id="statisticsContainer">
+                        <h3>統計値の比較</h3>
+                        <table id="statisticsTable">
+                            <thead>
+                                <tr>
+                                    <th>統計量</th>
+                                    <th>理論値</th>
+                                    <th>実験値</th>
+                                </tr>
+                            </thead>
+                            <tbody id="statisticsBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

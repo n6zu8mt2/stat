@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>離散型確率変数の理解</title>
+    <link rel="stylesheet" href="../common.css">
+    <link rel="stylesheet" href="discrete_rv.css">
+    <script>
+        // MathJaxのグローバル設定
+        MathJax = {
+          tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']]
+          },
+          svg: {
+            fontCache: 'global'
+          }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.2/p5.min.js"></script>
+</head>
+<body>
+    <div class="page-wrapper">
+        <!-- サイドバー -->
+        <div class="sidebar">
+            <h2>メニュー</h2>
+            <ul>
+                <li><a href="../index.html" target="_self">講義資料</a></li>
+                <li><a href="../loto6-simulator/index.html" target="_self">ロト6シミュレーター(問題1.3 = 問題2.5)</a></li>
+                <li><a href="../birthday-simulator/index.html" target="_self">誕生日シミュレーター(問題2.4)</a></li>
+                <li><a href="../gacha-simulator/index.html" target="_self">ガチャシミュレーター(問題3.1)</a></li>
+                <li><a href="../coin-toss-simulator/index.html" target="_self">コイントスシミュレーター(問題3.4・3.5・4.2・4.3)</a></li>
+                <li><a href="../venn-diagram/index.html" target="_self">ベン図(問題4.4)</a></li>
+                <li><a href="../seat-swap-simulator/index.html" target="_self">席替えシミュレーター(問題3.6 = 問題4.5)</a></li>
+                <li><a href="../gacha-simulator2/index.html" target="_self">ガチャシミュレーター(問題5.5)</a></li>
+                <li><a href="../disease-probability-simulator/index.html" target="_self">感染症確率シミュレーター(問題7.5)</a></li>
+                <li><a href="../coin-toss-random-variables/index.html" target="_self">コイン投げの確率変数シミュレーター(問題8.3)</a></li>
+                <li><a href="../random-variable-histgram/index.html" target="_self">離散型確率変数の理解</a></li>
+            </ul>
+        </div>
+        <div class="main-content">
+            <div class="header">
+                <h1>離散型確率変数の理解</h1>
+            </div>
+            <div class="container">
+                <section id="input-area">
+                    <div class="description">
+                        <h2>📘 確率変数とその統計量について</h2>
+                        <p>
+                            <strong>確率変数 $X$</strong> とは、試行の結果によって値が変わる変数のことです。例えば、「サイコロを振って出る目」などが挙げられます。<br>
+                            <strong>確率分布</strong>とは、確率変数Xがどの値を、どのくらいの確率でとるのかを一覧にしたものです。
+                        </p>
+                        <p>
+                            <strong>期待値 $E[X]$</strong> は、その確率変数が平均してどのくらいの値をとるかを示す指標で、「分布の重心」と考えることができます。値が大きいほど、全体的に大きな値が出やすい分布であることを意味します。
+                        </p>
+                        <p>
+                            <strong>分散 $V[X]$</strong> と <strong>標準偏差 $\sigma[X]$</strong> は、確率変数の値が期待値からどれだけ「散らばっているか」を示す指標です。値が大きいほど、結果のばらつきが大きく、予測が難しい（リスクが高い）分布であることを意味します。標準偏差は分散の平方根で、元の確率変数と同じ単位で散らばり具合を評価できます。
+                        </p>
+                        <p>例えば、ポケモンで対戦をしているときを考えます。以下の4つの確率変数は、ポケモンが覚えている技とその威力だとします。
+                            <ul>
+                                <li>分布1(堅実型)は、与えるダメージが$68$, $75$, $80$, $84$, $90$のいずれかであり、それぞれのダメージが出る確率が$0.1$, $0.2$, $0.3$, $0.3$, $0.1$です。
+                                </li>
+                                <li>分布2(山型)は、与えるダメージが$70$, $75$, $80$, $85$, $90$のいずれかであり、それぞれのダメージが出る確率が$0.1$, $0.2$, $0.4$, $0.2$, $0.1$です。
+                                </li>
+                                <li>分布3(高リスク型)は、与えるダメージが$0$, $70$, $90$, $110$, $130$のいずれかであり、それぞれのダメージが出る確率が$0.2$, $0.1$, $0.3$, $0.3$, $0.1$です。
+                                </li>
+                                <li>分布4(超博打型)は、与えるダメージが$0$, $60$, $80$, $170$のいずれかであり、それぞれのダメージが出る確率が$0.2$, $0.1$, $0.5$, $0.2$です。
+                                </li>
+                            </ul>
+                        敵のHPが$80$であったとき、どの技を使うと確実に倒せそうでしょうか？また、敵のHPが$100$の場合や、次の技で倒さないと負けてしまう追い詰められた場合はどうでしょうか？
+                        </p>
+                    </div>
+
+                    <h3>確率分布の比較</h3>
+                    <p>下の入力欄に確率分布を入力し、「計算と表示」ボタンを押してください。デフォルトで4つの異なる性格の分布が表示されています。</p>
+                    
+                    <div id="distributions-container">
+                        <div class="distribution-group" id="dist-group-1">
+                            <h4>分布 1 (堅実型)</h4>
+                            <div class="table-controls">
+                                <button type="button" class="add-col-btn">列を追加</button>
+                                <button type="button" class="remove-col-btn">列を削除</button>
+                            </div>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <th>$x$ の値</th>
+                                        <td><input type="number" class="x-value" value="68"></td>
+                                        <td><input type="number" class="x-value" value="75"></td>
+                                        <td><input type="number" class="x-value" value="80"></td>
+                                        <td><input type="number" class="x-value" value="84"></td>
+                                        <td><input type="number" class="x-value" value="90"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>$P(X=x)$</th>
+                                        <td><input type="number" class="p-value" value="0.1" step="0.1" min="0" max="1"></td>
+                                        <td><input type="number" class="p-value" value="0.2" step="0.1" min="0" max="1"></td>
+                                        <td><input type="number" class="p-value" value="0.3" step="0.1" min="0" max="1"></td>
+                                        <td><input type="number" class="p-value" value="0.3" step="0.1" min="0" max="1"></td>
+                                        <td><input type="number" class="p-value" value="0.1" step="0.1" min="0" max="1"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="main-controls">
+                                <button type="button" class="calculate-btn">計算と表示</button>
+                                <button type="button" class="show-formula-btn">計算式を表示</button>
+                                <button type="button" class="show-variance-hist-btn">分散を可視化</button>
+                            </div>
+                            <div class="results-container">
+                                <div class="display-options">
+                                    <fieldset class="histogram-options">
+                                        <legend>ヒストグラム表示</legend>
+                                        <label><input type="radio" name="hist-mode-1" value="custom" checked> 横軸:確率, 縦軸:$x$</label>
+                                        <label><input type="radio" name="hist-mode-1" value="standard"> 横軸:$x$, 縦軸:確率</label>
+                                    </fieldset>
+                                    <fieldset class="stddev-options">
+                                        <legend>$\sigma$の範囲</legend>
+                                        <label><input type="checkbox" class="stddev-checkbox" value="1"> ±1σ</label>
+                                        <label><input type="checkbox" class="stddev-checkbox" value="2"> ±2σ</label>
+                                        <label><input type="checkbox" class="stddev-checkbox" value="3"> ±3σ</label>
+                                    </fieldset>
+                                </div>
+                                <div class="histogram-wrapper"></div>
+                                <div class="statistics-wrapper"></div>
+                                <div class="formula-display" style="display: none;"></div>
+                                <div class="variance-histogram-wrapper" style="display: none;">
+                                    <h4>期待値との差の2乗 $(X-E[X])^2$ の分布</h4>
+                                    <div class="variance-histogram-canvas"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="distribution-group" id="dist-group-2">
+                           <h4>分布 2 (山型)</h4>
+                            <div class="table-controls">
+                                <button type="button" class="add-col-btn">列を追加</button>
+                                <button type="button" class="remove-col-btn">列を削除</button>
+                            </div>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <th>$x$ の値</th>
+                                        <td><input type="number" class="x-value" value="70"></td>
+                                        <td><input type="number" class="x-value" value="75"></td>
+                                        <td><input type="number" class="x-value" value="80"></td>
+                                        <td><input type="number" class="x-value" value="85"></td>
+                                        <td><input type="number" class="x-value" value="90"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>$P(X=x)$</th>
+                                        <td><input type="number" class="p-value" value="0.1" step="0.1" min="0" max="1"></td>
+                                        <td><input type="number" class="p-value" value="0.2" step="0.1" min="0" max="1"></td>
+                                        <td><input type="number" class="p-value" value="0.4" step="0.1" min="0" max="1"></td>
+                                        <td><input type="number" class="p-value" value="0.2" step="0.1" min="0" max="1"></td>
+                                        <td><input type="number" class="p-value" value="0.1" step="0.1" min="0" max="1"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="main-controls">
+                                <button type="button" class="calculate-btn">計算と表示</button>
+                                <button type="button" class="show-formula-btn">計算式を表示</button>
+                                <button type="button" class="show-variance-hist-btn">分散を可視化</button>
+                            </div>
+                            <div class="results-container">
+                                <div class="display-options">
+                                    <fieldset class="histogram-options">
+                                        <legend>ヒストグラム表示</legend>
+                                        <label><input type="radio" name="hist-mode-2" value="custom" checked> 横軸:確率, 縦軸:$x$</label>
+                                        <label><input type="radio" name="hist-mode-2" value="standard"> 横軸:$x$, 縦軸:確率</label>
+                                    </fieldset>
+                                    <fieldset class="stddev-options">
+                                        <legend>$\sigma$の範囲</legend>
+                                        <label><input type="checkbox" class="stddev-checkbox" value="1"> ±1σ</label>
+                                        <label><input type="checkbox" class="stddev-checkbox" value="2"> ±2σ</label>
+                                        <label><input type="checkbox" class="stddev-checkbox" value="3"> ±3σ</label>
+                                    </fieldset>
+                                </div>
+                                <div class="histogram-wrapper"></div>
+                                <div class="statistics-wrapper"></div>
+                                <div class="formula-display" style="display: none;"></div>
+                                <div class="variance-histogram-wrapper" style="display: none;">
+                                    <h4>期待値との差の2乗 $(X-E[X])^2$ の分布</h4>
+                                    <div class="variance-histogram-canvas"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="distribution-group" id="dist-group-3">
+                            <h4>分布 3 (高リスク型)</h4>
+                             <div class="table-controls">
+                                <button type="button" class="add-col-btn">列を追加</button>
+                                <button type="button" class="remove-col-btn">列を削除</button>
+                            </div>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <th>$x$ の値</th>
+                                        <td><input type="number" class="x-value" value="0"></td>
+                                        <td><input type="number" class="x-value" value="70"></td>
+                                        <td><input type="number" class="x-value" value="90"></td>
+                                        <td><input type="number" class="x-value" value="110"></td>
+                                        <td><input type="number" class="x-value" value="130"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>$P(X=x)$</th>
+                                        <td><input type="number" class="p-value" value="0.2" step="0.1" min="0" max="1"></td>
+                                        <td><input type="number" class="p-value" value="0.1" step="0.1" min="0" max="1"></td>
+                                        <td><input type="number" class="p-value" value="0.3" step="0.1" min="0" max="1"></td>
+                                        <td><input type="number" class="p-value" value="0.3" step="0.1" min="0" max="1"></td>
+                                        <td><input type="number" class="p-value" value="0.1" step="0.1" min="0" max="1"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="main-controls">
+                                <button type="button" class="calculate-btn">計算と表示</button>
+                                <button type="button" class="show-formula-btn">計算式を表示</button>
+                                <button type="button" class="show-variance-hist-btn">分散を可視化</button>
+                            </div>
+                            <div class="results-container">
+                                <div class="display-options">
+                                    <fieldset class="histogram-options">
+                                        <legend>ヒストグラム表示</legend>
+                                        <label><input type="radio" name="hist-mode-3" value="custom" checked> 横軸:確率, 縦軸:$x$</label>
+                                        <label><input type="radio" name="hist-mode-3" value="standard"> 横軸:$x$, 縦軸:確率</label>
+                                    </fieldset>
+                                    <fieldset class="stddev-options">
+                                        <legend>$\sigma$の範囲</legend>
+                                        <label><input type="checkbox" class="stddev-checkbox" value="1"> ±1σ</label>
+                                        <label><input type="checkbox" class="stddev-checkbox" value="2"> ±2σ</label>
+                                        <label><input type="checkbox" class="stddev-checkbox" value="3"> ±3σ</label>
+                                    </fieldset>
+                                </div>
+                                <div class="histogram-wrapper"></div>
+                                <div class="statistics-wrapper"></div>
+                                <div class="formula-display" style="display: none;"></div>
+                                <div class="variance-histogram-wrapper" style="display: none;">
+                                    <h4>期待値との差の2乗 $(X-E[X])^2$ の分布</h4>
+                                    <div class="variance-histogram-canvas"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="distribution-group" id="dist-group-4">
+                            <h4>分布 4 (超博打型)</h4>
+                            <div class="table-controls">
+                                <button type="button" class="add-col-btn">列を追加</button>
+                                <button type="button" class="remove-col-btn">列を削除</button>
+                            </div>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <th>$x$ の値</th>
+                                        <td><input type="number" class="x-value" value="0"></td>
+                                        <td><input type="number" class="x-value" value="60"></td>
+                                        <td><input type="number" class="x-value" value="80"></td>
+                                        <td><input type="number" class="x-value" value="170"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>$P(X=x)$</th>
+                                        <td><input type="number" class="p-value" value="0.2" step="0.1" min="0" max="1"></td>
+                                        <td><input type="number" class="p-value" value="0.1" step="0.1" min="0" max="1"></td>
+                                        <td><input type="number" class="p-value" value="0.5" step="0.1" min="0" max="1"></td>
+                                        <td><input type="number" class="p-value" value="0.2" step="0.1" min="0" max="1"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="main-controls">
+                                <button type="button" class="calculate-btn">計算と表示</button>
+                                <button type="button" class="show-formula-btn">計算式を表示</button>
+                                <button type="button" class="show-variance-hist-btn">分散を可視化</button>
+                            </div>
+                            <div class="results-container">
+                                <div class="display-options">
+                                    <fieldset class="histogram-options">
+                                        <legend>ヒストグラム表示</legend>
+                                        <label><input type="radio" name="hist-mode-4" value="custom" checked> 横軸:確率, 縦軸:$x$</label>
+                                        <label><input type="radio" name="hist-mode-4" value="standard"> 横軸:$x$, 縦軸:確率</label>
+                                    </fieldset>
+                                     <fieldset class="stddev-options">
+                                        <legend>$\sigma$の範囲</legend>
+                                        <label><input type="checkbox" class="stddev-checkbox" value="1"> ±1σ</label>
+                                        <label><input type="checkbox" class="stddev-checkbox" value="2"> ±2σ</label>
+                                        <label><input type="checkbox" class="stddev-checkbox" value="3"> ±3σ</label>
+                                    </fieldset>
+                                </div>
+                                <div class="histogram-wrapper"></div>
+                                <div class="statistics-wrapper"></div>
+                                <div class="formula-display" style="display: none;"></div>
+                                <div class="variance-histogram-wrapper" style="display: none;">
+                                    <h4>期待値との差の2乗 $(X-E[X])^2$ の分布</h4>
+                                    <div class="variance-histogram-canvas"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <hr class="separator">
+                    <button type="button" id="add-distribution-btn">新しい分布を追加</button>
+                </section>
+            </div>
+        </div>
+    </div>
+    <script src="discrete_rv.js"></script>
+</body>
+</html>

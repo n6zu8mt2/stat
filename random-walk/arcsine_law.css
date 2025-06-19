@@ -1,0 +1,98 @@
+/* arcsine_law.css */
+.settings .control-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1rem;
+}
+
+.settings label {
+    flex-basis: 250px;
+    font-weight: bold;
+}
+
+.settings input[type="number"] {
+    width: 120px;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.button-group {
+    text-align: center;
+}
+
+#run_simulation_btn {
+    padding: 0.8rem 1.5rem;
+    font-size: 1.1em;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#run_simulation_btn:hover {
+    background-color: #0056b3;
+}
+#run_simulation_btn:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+}
+
+.results-section {
+    margin-top: 2rem;
+}
+
+.result-block {
+    margin-bottom: 2.5rem;
+    padding: 1.5rem;
+    background: #fff;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+}
+
+.result-block h3 {
+    margin-top: 0;
+    color: #343a40;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 0.5rem;
+}
+
+#sample-paths-container,
+#lead-time-histogram-container {
+    border: 1px solid #ddd;
+    background-color: #fdfdfd;
+    padding: 5px;
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 320px;
+}
+
+#lead-time-table-container {
+    max-height: 400px;
+    overflow-y: auto;
+    margin-top: 1rem;
+    border: 1px solid #ddd;
+}
+
+#lead-time-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#lead-time-table th, 
+#lead-time-table td {
+    border: 1px solid #e0e0e0;
+    padding: 8px 12px;
+    text-align: center;
+}
+
+#lead-time-table thead th {
+    background-color: #f8f9fa;
+    position: sticky;
+    top: 0;
+}

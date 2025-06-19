@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>逆正弦法則シミュレーター</title>
+    <link rel="stylesheet" href="../common.css">
+    <link rel="stylesheet" href="arcsine_law.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.2/p5.min.js"></script>
+</head>
+<body>
+    <div class="page-wrapper">
+        <div class="sidebar">
+            <h2>メニュー</h2>
+            <ul>
+                <li><a href="../index.html" target="_self">講義資料</a></li>
+                <li><a href="../coin-toss-simulator/index.html" target="_self">コイントスシミュレーター</a></li>
+                <li><a href="../disease-probability-simulator/index.html" target="_self">感染症確率シミュレーター</a></li>
+                <li><a href="discrete_rv.html" target="_self">離散型確率変数の理解</a></li>
+                <li><a href="arcsine_law.html" target="_self">逆正弦法則シミュレーター</a></li>
+            </ul>
+        </div>
+        <div class="main-content">
+            <div class="header">
+                <h1>逆正弦法則シミュレーター</h1>
+            </div>
+            <div class="container">
+                <div class="description">
+                    <h2>⏳ 逆正弦法則とは？</h2>
+                    <p>
+                        点が原点から出発し、1秒ごとにコインを投げて表なら右(+1)、裏なら左(-1)に移動する「ランダムウォーク」を考えます。
+                        長時間この移動を続けたとき、点がプラス側にいた時間の割合はどのようになるでしょうか？
+                    </p>
+                    <p>
+                        直感的には「プラス側とマイナス側にいた時間は半々くらい」になる確率が最も高そうに思えます。しかし、**逆正弦法則**によれば、実際にはその真逆で、**「ほとんど全ての時間をプラス側（またはマイナス側）で過ごす」確率が最も高く、「プラス側とマイナス側にいた時間が半々になる」確率が最も低くなる**のです。
+                    </p>
+                    <p>
+                        このシミュレーターでは、多数のランダムウォークを実行し、プラス側にいた時間の割合の分布を可視化することで、この直感に反する不思議な法則を確かめます。
+                    </p>
+                </div>
+
+                <div class="settings">
+                    <h2>シミュレーション設定</h2>
+                    <div class="control-group">
+                        <label for="prob_p">右に移動する確率 p:</label>
+                        <input type="number" id="prob_p" value="0.5" min="0" max="1" step="0.01">
+                    </div>
+                    <div class="control-group">
+                        <label for="num_steps_n">シミュレーション時間 n (ステップ数):</label>
+                        <input type="number" id="num_steps_n" value="10" min="2" step="2">
+                    </div>
+                    <div class="control-group">
+                        <label for="num_simulations_k">シミュレーション回数 k:</label>
+                        <input type="number" id="num_simulations_k" value="10000" min="1">
+                    </div>
+                    <div class="button-group">
+                        <button id="run_simulation_btn">シミュレーション実行</button>
+                    </div>
+                </div>
+
+                <div class="results-section">
+                    <h2>シミュレーション結果</h2>
+                    
+                    <div class="result-block">
+                        <h3>ランダムウォークの軌跡 (サンプル10件)</h3>
+                        <p>シミュレーションの中から10個の軌跡をランダムに選び出して描画しています。</p>
+                        <div id="sample-paths-container"></div>
+                    </div>
+
+                    <div class="result-block">
+                        <h3>プラス領域滞在時間の集計</h3>
+                        <p>全シミュレーション（<span id="total-sims-span"></span>回）のうち、粒子がプラス領域 ($x>0$) にいた時間の割合ごとの回数です。</p>
+                        <div id="lead-time-table-container">
+                            <table id="lead-time-table">
+                                <thead>
+                                    <tr>
+                                        <th>プラス領域にいた時間の割合</th>
+                                        <th>回数</th>
+                                        <th>相対度数</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="lead-time-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="result-block">
+                        <h3>プラス領域滞在時間の分布（逆正弦法則）</h3>
+                        <p>上の表をヒストグラムで表したものです。青い棒がシミュレーション結果の相対度数、赤い線が理論的な逆正弦法則の確率密度関数を示しています。</p>
+                        <div id="lead-time-histogram-container"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="arcsine_law.js"></script>
+</body>
+</html>

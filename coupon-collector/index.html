@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>クーポンコレクター問題シミュレーター</title>
+    <link rel="stylesheet" href="../common.css">
+    <link rel="stylesheet" href="coupon_collector.css">
+    <script>
+        // MathJaxのグローバル設定
+        MathJax = {
+          tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']]
+          },
+          svg: {
+            fontCache: 'global'
+          }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.2/p5.min.js"></script>
+</head>
+<body>
+    <div class="page-wrapper">
+        <!-- サイドバー -->
+        <div class="sidebar">
+            <h2>メニュー</h2>
+            <ul>
+                <li><a href="../index.html" target="_self">講義資料</a></li>
+                <li><a href="../loto6-simulator/index.html" target="_self">ロト6シミュレーター(問題1.3 = 問題2.5)</a></li>
+                <li><a href="../birthday-simulator/index.html" target="_self">誕生日シミュレーター(問題2.4)</a></li>
+                <li><a href="../gacha-simulator/index.html" target="_self">ガチャシミュレーター(問題3.1)</a></li>
+                <li><a href="../coin-toss-simulator/index.html" target="_self">コイントスシミュレーター(問題3.4・3.5・4.2・4.3)</a></li>
+                <li><a href="../venn-diagram/index.html" target="_self">ベン図(問題4.4)</a></li>
+                <li><a href="../seat-swap-simulator/index.html" target="_self">席替えシミュレーター(問題3.6 = 問題4.5)</a></li>
+                <li><a href="../gacha-simulator2/index.html" target="_self">ガチャシミュレーター(問題5.5)</a></li>
+                <li><a href="../disease-probability-simulator/index.html" target="_self">感染症確率シミュレーター(問題7.5)</a></li>
+                <li><a href="../coin-toss-random-variables/index.html" target="_self">コイン投げの確率変数シミュレーター(問題8.3)</a></li>
+                <li><a href="../random-variable-histgram/index.html" target="_self">離散型確率変数の理解</a></li>
+                <li><a href="../coupon-collector/index.html" target="_self">クーポンコレクター問題シミュレーター</a></li>
+            </ul>
+        </div>
+
+        <div class="main-content">
+            <div class="header">
+                <h1>クーポンコレクター問題シミュレーター</h1>
+            </div>
+            <div class="container">
+                <div class="description">
+                    <h2>収集完了まで何回？ クーポンコレクター問題</h2>
+                    <p>
+                        <strong>クーポンコレクター問題</strong>とは、「全 $n$ 種類の景品（クーポン）があるとき、ランダムに1個ずつ集めて全種類をコンプリートするには、平均で何回かかるか？」という問題です。
+                    </p>
+                    <p>
+                        例えば、お菓子のオマケや、ソーシャルゲームのキャラクター集めなどがこの問題にあたります。最初は新しい種類がどんどん手に入りますが、後半になるにつれて、すでに持っている種類ばかりが出て、最後の1種類がなかなか手に入らない…という経験は多くの人にあるでしょう。
+                    </p>
+                    <p>
+                        このシミュレーターでは、まず1回のコンプリートまでの様子をアニメーションで体験し、その後、指定した回数だけシミュレーションを繰り返すことで、コンプリートまでにかかる回数の分布や、理論値との比較を観察します。
+                    </p>
+                </div>
+
+                <div class="settings">
+                    <h2>シミュレーション設定</h2>
+                    <div class="control-group">
+                        <label for="num_coupons_n">クーポンの種類数 $n$:</label>
+                        <input type="number" id="num_coupons_n" value="10" min="2" max="100">
+                    </div>
+                    <div class="control-group">
+                        <label for="num_simulations_k">シミュレーション回数 $k$:</label>
+                        <input type="number" id="num_simulations_k" value="10000" min="1">
+                    </div>
+                    <div class="button-group">
+                        <button id="run_full_simulation_btn">多数回シミュレーションを実行</button>
+                    </div>
+                </div>
+
+                <div class="results-section">
+                    <h2>シミュレーション結果</h2>
+                    
+                    <div class="result-block">
+                        <div class="result-header">
+                            <h3>1回のコンプリート体験アニメーション</h3>
+                        </div>
+                        <div class="animation-controls">
+                            <button id="start_animation_btn">アニメーション開始</button>
+                            <button id="toggle_log_btn">試行ログを表示</button>
+                        </div>
+                        <div id="single-trial-container">
+                            <div id="collection-status">
+                                <p><strong>現在の回数:</strong> <span id="draw-count">0</span></p>
+                                <p><strong>集めた種類:</strong> <span id="collected-count">0</span> / <span id="total-types">10</span></p>
+                            </div>
+                            <div id="coupon-grid"></div>
+                            <div id="animation-log-container" style="display: none;">
+                                <h4>試行ログ</h4>
+                                <table id="animation-log-table">
+                                    <thead><tr><th>回数</th><th>出た景品</th></tr></thead>
+                                    <tbody id="animation-log-body"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="summary-results-block" class="result-block" style="display:none;">
+                        <h3>全<span id="total-sims-span"></span>回シミュレーションの集計</h3>
+                        
+                        <div id="summary-stats-container">
+                            <table id="summary-stats-table">
+                                <thead>
+                                    <tr>
+                                        <th>統計量</th>
+                                        <th>理論値</th>
+                                        <th>実験値</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="summary-stats-body"></tbody>
+                            </table>
+                        </div>
+
+                        <h4>コンプリートまでにかかった回数の分布</h4>
+                        <div class="display-options">
+                             <fieldset class="stddev-options">
+                                <legend>$\sigma$の範囲</legend>
+                                <label><input type="checkbox" class="stddev-checkbox" value="1"> ±1σ</label>
+                                <label><input type="checkbox" class="stddev-checkbox" value="2"> ±2σ</label>
+                                <label><input type="checkbox" class="stddev-checkbox" value="3"> ±3σ</label>
+                            </fieldset>
+                        </div>
+                        <div id="results-histogram-container"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="coupon_collector.js"></script>
+</body>
+</html>

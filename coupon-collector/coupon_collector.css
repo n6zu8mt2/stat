@@ -1,0 +1,219 @@
+/* coupon_collector.css */
+.settings .control-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1rem;
+}
+
+.settings label {
+    flex-basis: 220px;
+    font-weight: bold;
+}
+
+.settings input[type="number"] {
+    width: 120px;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.button-group {
+    text-align: center;
+}
+
+#run_full_simulation_btn { /* ID名を変更 */
+    padding: 0.8rem 1.5rem;
+    font-size: 1.1em;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#run_full_simulation_btn:hover {
+    background-color: #0056b3;
+}
+#run_full_simulation_btn:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+}
+
+.results-section {
+    margin-top: 2rem;
+}
+
+.result-block {
+    margin-bottom: 2.5rem;
+    padding: 1.5rem;
+    background: #fff;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+}
+
+.result-header {
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.result-header h3 {
+    margin: 0;
+    color: #343a40;
+    border: none;
+}
+
+.animation-controls {
+    margin-bottom: 1rem;
+}
+
+#start_animation_btn, #toggle_log_btn {
+    padding: 5px 10px;
+    font-size: 0.9em;
+    background-color: #17a2b8;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* 単一シミュレーションのアニメーションエリア */
+#single-trial-container {
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+}
+#collection-status {
+    display: flex;
+    justify-content: space-around;
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background-color: #e9ecef;
+    border-radius: 5px;
+}
+#coupon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    gap: 10px;
+    margin-bottom: 1rem;
+}
+.coupon-item {
+    width: 60px;
+    height: 60px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2em;
+    font-weight: bold;
+    background-color: #e9ecef;
+    color: #adb5bd;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+.coupon-item.collected {
+    background-color: #28a745;
+    color: white;
+    border-color: #1e7e34;
+}
+.coupon-item.just-collected {
+    animation: flash 0.5s;
+}
+@keyframes flash {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); background-color: #ffc107; }
+    100% { transform: scale(1); }
+}
+
+/* アニメーションログテーブル */
+#animation-log-container {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+}
+#animation-log-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+#animation-log-table th, #animation-log-table td {
+    padding: 6px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+}
+#animation-log-table thead th {
+    background-color: #343a40;
+    color: white;
+    position: sticky;
+    top: 0;
+}
+/* ログの色分け用スタイル */
+.log-color-0 { background-color: #ffebee; }
+.log-color-1 { background-color: #e8f5e9; }
+.log-color-2 { background-color: #e3f2fd; }
+.log-color-3 { background-color: #fffde7; }
+.log-color-4 { background-color: #f3e5f5; }
+.log-color-5 { background-color: #e0f2f1; }
+.log-color-6 { background-color: #fbe9e7; }
+.log-color-7 { background-color: #eceff1; }
+.log-color-8 { background-color: #fafafa; }
+.log-color-9 { background-color: #fff3e0; }
+
+/* 集計結果エリア */
+#summary-stats-container {
+    margin-bottom: 2rem;
+}
+#summary-stats-table {
+    width: 100%;
+    max-width: 600px;
+    margin: 1rem auto;
+    border-collapse: collapse;
+}
+#summary-stats-table th, 
+#summary-stats-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+#summary-stats-table th {
+    background-color: #f2f2f2;
+}
+
+#results-histogram-container {
+    border: 1px solid #ddd;
+    background-color: #fdfdfd;
+    padding: 5px;
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 320px;
+}
+
+.display-options {
+    margin: 10px 0;
+    padding: 8px;
+    background-color: #f8f9fa;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.stddev-options {
+    border: 1px solid #dee2e6;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    display: inline-block;
+}
+.stddev-options legend {
+    font-weight: bold;
+    padding: 0 5px;
+    font-size: 0.95em;
+}
+.stddev-options label {
+    margin: 0 10px;
+    cursor: pointer;
+}

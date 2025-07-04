@@ -13,8 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const n = parseInt(document.getElementById('num_steps_n').value);
             const k = parseInt(document.getElementById('num_simulations_k').value);
 
-            if (isNaN(p) || isNaN(n) || isNaN(k) || p < 0 || p > 1 || n < 2 || k < 1) {
-                alert('有効な値を入力してください。');
+            if (isNaN(p) || isNaN(n) || isNaN(k) || p < 0 || p > 1 || k < 1000) {
+                alert('有効な値を入力してください。kは1000以上を推奨します。');
                 runBtn.disabled = false;
                 runBtn.textContent = 'シミュレーション実行';
                 return;
@@ -32,11 +32,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 for (let t = 1; t <= n; t++) {
                     position += (Math.random() < p) ? 1 : -1;
-                    // ★★★ サンプル数を5件に変更 ★★★
                     if (i < 5) {
                         path.push({ t: t, x: position });
                     }
-                    if (position > 0) {
+                    if (position >= 0) {
                         positiveTime++;
                     }
                 }
@@ -67,7 +66,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ★★★ 軌跡の色を5色に固定 ★★★
     function drawSamplePaths(paths, n) {
         const container = document.getElementById('sample-paths-container');
         if (samplePathsSketchInstance) {
@@ -75,13 +73,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         const sketch = (p) => {
             const yPositions = paths.flatMap(path => path.map(pt => pt.x));
-            const yMax = Math.max(...yPositions.map(Math.abs), 1); // ゼロ除算を避ける
+            const yMax = Math.max(...yPositions.map(Math.abs), 1);
             const colors = [
-                p.color(255, 100, 100, 150), // 赤系
-                p.color(100, 150, 255, 150), // 青系
-                p.color(100, 200, 100, 150), // 緑系
-                p.color(200, 100, 200, 150), // 紫系
-                p.color(255, 150, 50, 150)   // オレンジ系
+                p.color(255, 100, 100, 150),
+                p.color(100, 150, 255, 150),
+                p.color(100, 200, 100, 150),
+                p.color(200, 100, 200, 150),
+                p.color(255, 150, 50, 150)
             ];
 
             p.setup = () => {
@@ -91,16 +89,43 @@ document.addEventListener('DOMContentLoaded', () => {
 
             p.draw = () => {
                 p.background(255);
-                const padding = { top: 20, bottom: 30, left: 30, right: 20 };
+                const padding = { top: 20, bottom: 50, left: 50, right: 20 };
 
+                // 横軸（x = 0に対応）
+                const yZero = p.map(0, -yMax, yMax, p.height - padding.bottom, padding.top);
                 p.stroke(200);
-                p.line(padding.left, p.height / 2, p.width - padding.right, p.height / 2);
-                
-                p.noStroke(); p.fill(0); p.textAlign(p.CENTER, p.TOP);
-                p.text('時間 (t)', p.width / 2, p.height - padding.bottom + 10);
+                p.line(padding.left, yZero, p.width - padding.right, yZero);
 
+                // 横軸の目盛りとラベル
+                p.noStroke(); p.fill(0); p.textAlign(p.CENTER, p.TOP);
+                for (let i = 0; i <= 5; i++) {
+                    const t = (i * n) / 5;
+                    const x = p.map(t, 0, n, padding.left, p.width - padding.right);
+                    p.line(x, yZero - 5, x, yZero + 5);
+                    p.text(Math.round(t), x, yZero + 10);
+                }
+                p.text('時間 (t)', p.width / 2, p.height - padding.bottom + 20);
+
+                // 縦軸と目盛り
+                p.stroke(200);
+                p.line(padding.left, padding.top, padding.left, p.height - padding.bottom);
+                p.noStroke(); p.fill(0); p.textAlign(p.RIGHT, p.CENTER);
+                for (let i = -2; i <= 2; i++) {
+                    const yVal = (i * yMax) / 2;
+                    const y = p.map(yVal, -yMax, yMax, p.height - padding.bottom, padding.top);
+                    p.line(padding.left - 5, y, padding.left + 5, y);
+                    p.text(yVal.toFixed(1), padding.left - 10, y);
+                }
+                p.push();
+                p.translate(padding.left - 35, p.height / 2);
+                p.rotate(-p.HALF_PI);
+                p.textAlign(p.CENTER, p.CENTER);
+                p.text('位置 (x)', 0, 0);
+                p.pop();
+
+                // ランダムウォークの軌跡
                 paths.forEach((path, index) => {
-                    p.stroke(colors[index % colors.length]); // 色を配列から選択
+                    p.stroke(colors[index % colors.length]);
                     p.noFill();
                     p.strokeWeight(1.5);
                     p.beginShape();
@@ -116,14 +141,19 @@ document.addEventListener('DOMContentLoaded', () => {
         samplePathsSketchInstance = new p5(sketch, container);
     }
 
-    // ★★★ ヒストグラム描画関数を修正 ★★★
     function drawLeadTimeHistogram(counts, k, n) {
         const container = document.getElementById('lead-time-histogram-container');
         if (histogramSketchInstance) {
             histogramSketchInstance.remove();
         }
         const sketch = (p) => {
-            const relativeFreqs = counts.map(c => c / k);
+            const binCount = Math.min(n + 1, 50);
+            const binnedCounts = new Array(binCount).fill(0);
+            counts.forEach((count, time) => {
+                const binIndex = Math.floor((time / n) * binCount);
+                if (binIndex < binCount) binnedCounts[binIndex] += count;
+            });
+            const relativeFreqs = binnedCounts.map(c => c / k);
             const maxFreq = Math.max(...relativeFreqs);
 
             p.setup = () => {
@@ -133,15 +163,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
             p.draw = () => {
                 p.background(255);
-                const padding = { top: 20, bottom: 50, left: 50, right: 20 }; // 下の余白を増やす
+                const padding = { top: 20, bottom: 50, left: 50, right: 20 };
                 const graphHeight = p.height - padding.top - padding.bottom;
                 const graphWidth = p.width - padding.left - padding.right;
 
                 // 棒グラフの描画
-                relativeFreqs.forEach((freq, time) => {
+                relativeFreqs.forEach((freq, index) => {
                     const barHeight = p.map(freq, 0, maxFreq, 0, graphHeight);
-                    const barWidth = graphWidth / (n + 1);
-                    const x = padding.left + time * barWidth;
+                    const barWidth = graphWidth / binCount;
+                    const x = padding.left + index * barWidth;
                     const y = p.height - padding.bottom - barHeight;
                     p.fill(66, 133, 244, 150);
                     p.stroke(66, 133, 244);
@@ -154,31 +184,27 @@ document.addEventListener('DOMContentLoaded', () => {
                 for (let x_ratio = 0.01; x_ratio < 0.99; x_ratio += 0.01) {
                     const arcsine_pdf = 1 / (Math.PI * Math.sqrt(x_ratio * (1 - x_ratio)));
                     const x = padding.left + x_ratio * graphWidth;
-                    
-                    const bar_count = n+1;
-                    const hist_bar_width = 1 / bar_count;
-                    const scaled_y = (arcsine_pdf * hist_bar_width);
-                    
+                    const hist_bar_width = 1 / binCount;
+                    const scaled_y = arcsine_pdf * hist_bar_width;
                     const y = p.height - padding.bottom - p.map(scaled_y, 0, maxFreq, 0, graphHeight);
-
                     if (y > padding.top) {
-                         p.vertex(x, y);
+                        p.vertex(x, y);
                     }
                 }
                 p.endShape();
 
                 // 軸とラベル
                 p.stroke(0); p.strokeWeight(1);
-                p.line(padding.left, p.height - padding.bottom, p.width - padding.right, p.height - padding.bottom); // 横軸
-                p.line(padding.left, padding.top, padding.left, p.height - padding.bottom); // 縦軸
+                p.line(padding.left, p.height - padding.bottom, p.width - padding.right, p.height - padding.bottom);
+                p.line(padding.left, padding.top, padding.left, p.height - padding.bottom);
 
                 p.noStroke(); p.fill(0);
                 p.textAlign(p.CENTER, p.TOP);
-                p.text("プラス領域にいた時間の割合 (t/n)", p.width/2, p.height - padding.bottom + 20); // Y座標を調整
+                p.text("プラス領域にいた時間の割合 (t/n)", p.width/2, p.height - padding.bottom + 20);
 
                 // 横軸の数値ラベル
-                for(let i = 0; i <= 5; i++){
-                    let ratio = i/5;
+                for (let i = 0; i <= 5; i++) {
+                    let ratio = i / 5;
                     let x = padding.left + ratio * graphWidth;
                     p.textAlign(p.CENTER, p.TOP);
                     p.text(ratio.toFixed(1), x, p.height - padding.bottom + 5);
@@ -186,8 +212,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // 縦軸の数値ラベルとタイトル
                 p.textAlign(p.RIGHT, p.CENTER);
-                for(let i = 0; i <= 4; i++){
-                    const ratio = i/4;
+                for (let i = 0; i <= 4; i++) {
+                    const ratio = i / 4;
                     const val = ratio * maxFreq;
                     const y = p.height - padding.bottom - ratio * graphHeight;
                     p.text(val.toFixed(3), padding.left - 5, y);
@@ -204,6 +230,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     runBtn.addEventListener('click', runSimulation);
-    // 初期表示
     runSimulation();
 });

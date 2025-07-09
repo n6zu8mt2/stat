@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>大数の法則シミュレーター</title>
+    <link rel="stylesheet" href="../common.css">
+    <link rel="stylesheet" href="lln_dice.css">
+    <script>
+        // MathJaxのグローバル設定
+        MathJax = {
+          tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']]
+          },
+          svg: {
+            fontCache: 'global'
+          }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.2/p5.min.js"></script>
+</head>
+<body>
+    <div class="page-wrapper">
+        <div class="sidebar">
+            <h2>メニュー</h2>
+            <ul>
+                <li><a href="../index.html" target="_self">講義資料</a></li>
+                <li><a href="../loto6-simulator/index.html" target="_self">ロト6シミュレーター(問題1.3 = 問題2.5)</a></li>
+                <li><a href="../birthday-simulator/index.html" target="_self">誕生日シミュレーター(問題2.4)</a></li>
+                <li><a href="../gacha-simulator/index.html" target="_self">ガチャシミュレーター(問題3.1)</a></li>
+                <li><a href="../coin-toss-simulator/index.html" target="_self">コイントスシミュレーター(問題3.4・3.5・4.2・4.3)</a></li>
+                <li><a href="../venn-diagram/index.html" target="_self">ベン図(問題4.4)</a></li>
+                <li><a href="../seat-swap-simulator/index.html" target="_self">席替えシミュレーター(問題3.6 = 問題4.5)</a></li>
+                <li><a href="../gacha-simulator2/index.html" target="_self">ガチャシミュレーター(問題5.5)</a></li>
+                <li><a href="../disease-probability-simulator/index.html" target="_self">感染症確率シミュレーター(問題7.5)</a></li>
+                <li><a href="../coin-toss-random-variables/index.html" target="_self">コイン投げの確率変数シミュレーター(問題8.3)</a></li>
+                <li><a href="../random-variable-histgram/index.html" target="_self">離散型確率変数の理解</a></li>
+                <li><a href="../coupon-collector/index.html" target="_self">クーポンコレクター問題シミュレーター</a></li>
+                <li><a href="../random-walk/index.html" target="_self">ランダムウォークシミュレーター</a></li>
+                <li><a href="../law-of-large-numbers/index.html" target="_self">大数の法則シミュレーター</a></li>
+            </ul>
+        </div>
+
+        <div class="main-content">
+            <div class="header">
+                <h1>大数の法則シミュレーター</h1>
+            </div>
+            <div class="container">
+                <div class="description">
+                    <h2>🎲 大数の法則とは？</h2>
+                    <p>
+                        <strong>大数の法則 (Law of Large Numbers)</strong> とは、確率論における基本的な定理の一つです。「同じ条件で何度も試行を繰り返せば、その結果の平均値は、理論的な平均値（期待値）に近づいていく」という法則です。
+                    </p>
+                    <p>
+                        このシミュレーターでは、最も分かりやすい例としてサイコロ投げを用います。サイコロの各目が出る確率は同様に確からしく (1/6)、その期待値は次のようになります。
+                        $$ E[X] = \frac{1+2+3+4+5+6}{6} = 3.5 $$
+                        試行回数が少ないうちは、出目の平均は1や6に近いなど大きく偏ることもありますが、試行回数を増やしていくと、平均値が $3.5$ という一本の線に収束していく様子を観察してみましょう。
+                    </p>
+                </div>
+
+            <div class="settings">
+                <h2>シミュレーション設定</h2>
+                <div class="control-group">
+                    <label for="num_trials">シミュレーション回数:</label>
+                    <input type="number" id="num_trials" value="1000" min="1">
+                </div>
+                <div class="button-group">
+                    <button id="start_stop_btn">開始</button>
+                    <button id="reset_btn">リセット</button>
+                </div>
+            </div>
+
+            <div class="results-section">
+                <h2>シミュレーション結果</h2>
+                <div id="simulation-area">
+                    <div id="live-stats-container">
+                        <div class="stat-box">
+                            <span class="label">試行回数</span>
+                            <span class="value" id="trial-count">0</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="label">最後の出目</span>
+                            <div id="dice-container">
+                                <div class="dice-face" data-face="0">
+                                    <div class="dice-dot dot-1"></div>
+                                    <div class="dice-dot dot-2"></div>
+                                    <div class="dice-dot dot-3"></div>
+                                    <div class="dice-dot dot-4"></div>
+                                    <div class="dice-dot dot-5"></div>
+                                    <div class="dice-dot dot-6"></div>
+                                    <div class="dice-dot dot-7"></div>
+                                    <div class="dice-dot dot-8"></div>
+                                    <div class="dice-dot dot-9"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="stat-box">
+                            <span class="label">現在の平均値</span>
+                            <span class="value" id="current-average">N/A</span>
+                        </div>
+                    </div>
+                    <div id="graph-container"></div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+    <script src="lln_dice.js"></script>
+</body>
+</html>

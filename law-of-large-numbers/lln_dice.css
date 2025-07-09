@@ -1,0 +1,160 @@
+/* lln_dice.css */
+.settings .control-group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 1rem;
+}
+
+.settings label {
+    font-weight: bold;
+}
+
+.settings input[type="number"] {
+    width: 120px;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.button-group {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.button-group button {
+    padding: 0.7rem 1.5rem;
+    font-size: 1em;
+    margin: 0 10px;
+    min-width: 120px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#start_stop_btn {
+    background-color: #28a745;
+    color: white;
+}
+#start_stop_btn:hover { background-color: #218838; }
+#start_stop_btn.running {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+#reset_btn {
+    background-color: #6c757d;
+    color: white;
+}
+#reset_btn:hover { background-color: #5a6268; }
+
+.results-section {
+    margin-top: 2rem;
+}
+
+#simulation-area {
+    padding: 1.5rem;
+    background: #fff;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+}
+
+#live-stats-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+}
+
+.stat-box {
+    min-width: 150px;
+}
+.stat-box .label {
+    display: block;
+    font-size: 0.9em;
+    color: #6c757d;
+    margin-bottom: 0.5rem;
+}
+.stat-box .value {
+    font-size: 2em;
+    font-weight: bold;
+    color: #343a40;
+    font-family: monospace;
+}
+
+#dice-container {
+    display: inline-block;
+}
+
+.dice-face {
+    width: 60px;
+    height: 60px;
+    border: 2px solid #343a40;
+    border-radius: 8px;
+    padding: 5px;
+    background-color: white;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 4px;
+}
+
+.dice-dot {
+    background-color: #343a40;
+    border-radius: 50%;
+    align-self: center;
+    justify-self: center;
+    width: 12px;
+    height: 12px;
+    visibility: hidden;
+}
+
+/* Explicitly hide all dots when data-face="0" */
+.dice-face[data-face="0"] .dice-dot {
+    visibility: hidden;
+}
+
+/* Dice face configurations */
+.dice-face[data-face="1"] .dot-5 { visibility: visible; }
+
+.dice-face[data-face="2"] .dot-1,
+.dice-face[data-face="2"] .dot-9 { visibility: visible; }
+
+.dice-face[data-face="3"] .dot-1,
+.dice-face[data-face="3"] .dot-5,
+.dice-face[data-face="3"] .dot-9 { visibility: visible; }
+
+.dice-face[data-face="4"] .dot-1,
+.dice-face[data-face="4"] .dot-3,
+.dice-face[data-face="4"] .dot-7,
+.dice-face[data-face="4"] .dot-9 { visibility: visible; }
+
+.dice-face[data-face="5"] .dot-1,
+.dice-face[data-face="5"] .dot-3,
+.dice-face[data-face="5"] .dot-5,
+.dice-face[data-face="5"] .dot-7,
+.dice-face[data-face="5"] .dot-9 { visibility: visible; }
+
+.dice-face[data-face="6"] .dot-1,
+.dice-face[data-face="6"] .dot-3,
+.dice-face[data-face="6"] .dot-4,
+.dice-face[data-face="6"] .dot-6,
+.dice-face[data-face="6"] .dot-7,
+.dice-face[data-face="6"] .dot-9 { visibility: visible; }
+
+#graph-container {
+    border: 1px solid #ddd;
+    background-color: #fdfdfd;
+    padding: 5px;
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 400px;
+}

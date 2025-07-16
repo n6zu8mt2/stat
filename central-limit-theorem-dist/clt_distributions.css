@@ -1,0 +1,109 @@
+/* clt_distributions.css */
+.settings .control-group {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 1rem;
+    justify-content: center;
+}
+
+.settings label {
+    flex-basis: 250px;
+    font-weight: bold;
+    text-align: right;
+}
+
+.settings select, .settings input[type="number"] {
+    width: 150px;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.settings select {
+    flex-grow: 1;
+    max-width: 330px;
+}
+
+.settings input[type="range"] {
+    flex-grow: 1;
+    max-width: 300px;
+}
+
+#sample_size_n_value {
+    font-weight: bold;
+    font-family: monospace;
+    font-size: 1.2em;
+    min-width: 30px;
+}
+
+.param-group {
+    border-left: 3px solid #007bff;
+    padding-left: 15px;
+    margin-left: 20px;
+}
+
+.button-group {
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+#run_simulation_btn {
+    padding: 0.8rem 1.5rem;
+    font-size: 1.1em;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+#run_simulation_btn:hover {
+    background-color: #0056b3;
+}
+#run_simulation_btn:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+}
+
+.results-section {
+    margin-top: 2rem;
+}
+
+#results-area {
+    padding: 1.5rem;
+    background: #fff;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+}
+
+#summary-stats-container {
+    margin-bottom: 2rem;
+}
+#summary-stats-table {
+    width: 100%;
+    max-width: 600px;
+    margin: 1rem auto;
+    border-collapse: collapse;
+}
+#summary-stats-table th, 
+#summary-stats-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+#summary-stats-table th {
+    background-color: #f2f2f2;
+}
+
+#histogram-container {
+    border: 1px solid #ddd;
+    background-color: #fdfdfd;
+    padding: 5px;
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 420px;
+}

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中心極限定理シミュレーター</title>
+    <link rel="stylesheet" href="../common.css">
+    <link rel="stylesheet" href="clt_distributions.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.2/p5.min.js"></script>
+    <script src="clt_distributions.js"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+    <div class="page-wrapper">
+        <div class="sidebar">
+            <h2>メニュー</h2>
+            <ul>
+                <li><a href="../index.html" target="_self">講義資料</a></li>
+                <li><a href="../loto6-simulator/index.html" target="_self">ロト6シミュレーター(問題1.3 = 問題2.5)</a></li>
+                <li><a href="../birthday-simulator/index.html" target="_self">誕生日シミュレーター(問題2.4)</a></li>
+                <li><a href="../gacha-simulator/index.html" target="_self">ガチャシミュレーター(問題3.1)</a></li>
+                <li><a href="../coin-toss-simulator/index.html" target="_self">コイントスシミュレーター(問題3.4・3.5・4.2・4.3)</a></li>
+                <li><a href="../venn-diagram/index.html" target="_self">ベン図(問題4.4)</a></li>
+                <li><a href="../seat-swap-simulator/index.html" target="_self">席替えシミュレーター(問題3.6 = 問題4.5)</a></li>
+                <li><a href="../gacha-simulator2/index.html" target="_self">ガチャシミュレーター(問題5.5)</a></li>
+                <li><a href="../disease-probability-simulator/index.html" target="_self">感染症確率シミュレーター(問題7.5)</a></li>
+                <li><a href="../coin-toss-random-variables/index.html" target="_self">コイン投げの確率変数シミュレーター(問題8.3)</a></li>
+                <li><a href="../random-variable-histgram/index.html" target="_self">離散型確率変数の理解</a></li>
+                <li><a href="../coupon-collector/index.html" target="_self">クーポンコレクター問題シミュレーター</a></li>
+                <li><a href="../random-walk/index.html" target="_self">ランダムウォークシミュレーター</a></li>
+                <li><a href="../law-of-large-numbers/index.html" target="_self">大数の法則シミュレーター</a></li>
+                <li><a href="../central-limit-theorem-dist/index.html" target="_self">中心極限定理シミュレーター</a></li>
+            </ul>
+        </div>
+
+        <div class="main-content">
+            <div class="header">
+            <h1>中心極限定理シミュレーター (多分布対応)</h1>
+        </div>
+            <div class="container">
+                <div class="description">
+            <h2>いろいろな分布で確かめる中心極限定理</h2>
+            <p>中心極限定理は、「母集団がどんな形の確率分布であっても、そこから無作為抽出した標本の合計（や平均）の分布は、標本のサイズが大きくなるにつれて正規分布に近づく」という非常に強力な定理です。</p>
+            <p>このシミュレーターでは、元の分布として、サイコロのような「一様分布」だけでなく、偏りのある「ポアソン分布」や「指数分布」など、様々な分布を選択できます。どんなに形の違う分布から始めても、その和の分布が美しい正規分布に収束していく様子を観察し、中心極限定理の普遍性を体感してください。</p>
+            <p>数学的には、中心極限定理は以下のように表現されます。母集団の確率変数 \( X_1, X_2, \ldots, X_n \) が独立同分布 (i.i.d.) で、期待値 \( \mu \) と分散 \( \sigma^2 \) をもつとき、標本平均 \( \bar{X}_n = \dfrac{1}{n} \sum_{i=1}^n X_i \) は、\( n \to \infty \) で次の正規分布で近似できます：</p>
+            \[ \bar{X}_n = \dfrac{1}{n} \sum_{i=1}^n X_i\text{は近似的に}N\left(\mu, \dfrac{\sigma^2}{n}\right)\text{に従う} \]
+            <p>ここで、\( N\left(\mu, \dfrac{\sigma^2}{n}\right) \)は期待値が\( \mu \)、分散が\( \dfrac{\sigma^2}{n} \)の正規分布です。</p>
+        </div>
+
+        <section class="settings">
+            <h2>シミュレーション設定</h2>
+            <div class="control-group">
+                <label for="distribution_type">元の確率分布:</label>
+                <select id="distribution_type">
+                    <option value="uniform-discrete">離散一様分布 (サイコロ)</option>
+                    <option value="bernoulli">ベルヌーイ分布</option>
+                    <option value="binomial">二項分布</option>
+                    <option value="geometric">幾何分布</option>
+                    <option value="poisson">ポアソン分布</option>
+                    <option value="uniform-continuous">連続一様分布</option>
+                    <option value="exponential">指数分布</option>
+                    <option value="chi-squared">カイ二乗分布</option>
+                </select>
+            </div>
+
+            <div id="params-container">
+                <div id="params-uniform-discrete" class="param-group">
+                    <div class="control-group">
+                        <label for="m_sides">面の数 m:</label>
+                        <input type="number" id="m_sides" value="6" min="2" step="1">
+                    </div>
+                </div>
+                <div id="params-bernoulli" class="param-group" style="display: none;">
+                    <div class="control-group">
+                        <label for="p_bern">成功確率 p:</label>
+                        <input type="number" id="p_bern" value="0.5" min="0" max="1" step="0.01">
+                    </div>
+                </div>
+                <div id="params-binomial" class="param-group" style="display: none;">
+                    <div class="control-group">
+                        <label for="k_bino">試行回数 k:</label>
+                        <input type="number" id="k_bino" value="10" min="1" step="1">
+                    </div>
+                    <div class="control-group">
+                        <label for="p_bino">成功確率 p:</label>
+                        <input type="number" id="p_bino" value="0.5" min="0" max="1" step="0.01">
+                    </div>
+                </div>
+                <div id="params-geometric" class="param-group" style="display: none;">
+                    <div class="control-group">
+                        <label for="p_geom">成功確率 p:</label>
+                        <input type="number" id="p_geom" value="0.5" min="0" max="1" step="0.01">
+                    </div>
+                </div>
+                <div id="params-poisson" class="param-group" style="display: none;">
+                    <div class="control-group">
+                        <label for="lambda_p">平均 (λ):</label>
+                        <input type="number" id="lambda_p" value="5" min="0" step="0.1">
+                    </div>
+                </div>
+                <div id="params-uniform-continuous" class="param-group" style="display: none;"></div>
+                <div id="params-exponential" class="param-group" style="display: none;">
+                    <div class="control-group">
+                        <label for="lambda_e">レート (λ):</label>
+                        <input type="number" id="lambda_e" value="1" min="0" step="0.1">
+                    </div>
+                </div>
+                <div id="params-chi-squared" class="param-group" style="display: none;">
+                    <div class="control-group">
+                        <label for="df_chi">自由度 df:</label>
+                        <input type="number" id="df_chi" value="2" min="1" step="1">
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label for="sample_size_n">標本サイズ (合計する変数の数) n:</label>
+                <input type="number" id="sample_size_n" value="1" min="1" step="1">
+                <input type="range" id="sample_size_n_slider" min="1" max="100" value="1">
+                <span id="sample_size_n_value">1</span>
+            </div>
+            <div class="control-group">
+                <label for="num_trials_k">シミュレーション回数 k:</label>
+                <input type="number" id="num_trials_k" value="10000" min="1" step="1">
+            </div>
+            <div class="button-group">
+                <button id="run_simulation_btn">シミュレーション実行</button>
+            </div>
+        </section>
+
+        <section class="results-section">
+            <h2>シミュレーション結果</h2>
+            <div id="results-area">
+                <div id="summary-stats-container">
+                    <table id="summary-stats-table">
+                        <thead>
+                            <tr>
+                                <th>統計量 (合計値の分布)</th>
+                                <th>理論値</th>
+                                <th>実験値</th>
+                            </tr>
+                        </thead>
+                        <tbody id="summary-stats-body"></tbody>
+                    </table>
+                </div>
+                <div id="histogram-container"></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
